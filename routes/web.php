@@ -1,0 +1,32 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\PatientController;
+
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('{path}', function () {
+    return view('welcome');
+})->where('path', '.+');
+
+Route::post('/login', [AuthController::class, 'login']);
+
+Route::controller(PatientController::class)->prefix('patient')->group(function() {
+    Route::post('/retrieve', 'retrieve');
+    Route::get('/index', 'index');
+    Route::post('/store', 'store');
+});
