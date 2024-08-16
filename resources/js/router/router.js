@@ -1,4 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
+// import authMiddleware from "../middleware/authMiddleware";
+import { useAuthStore } from "../store/auth";
 import PageNotFound from "../pages/PageNotFound.vue";
 import SignIn from "../pages/auth/SignIn.vue";
 import Home from "../pages/Home.vue";
@@ -58,10 +60,14 @@ if (itemStr !== null) {
     }
 }
 
+// router.beforeEach(authMiddleware);
+
 router.beforeEach((to, from, next) => {
+    const store = useAuthStore();
+    const isAuth = store.user || null;
     if(to.matched.some(record => record.meta.requiresAuth))
     {
-        if(!isAuthenticated())
+        if(isAuth == null)
         {
             next('/sign-in')
         }
@@ -71,7 +77,7 @@ router.beforeEach((to, from, next) => {
         }
     }
     else if (to.matched.some(record => record.meta.requiresGuest)) {
-        if(isAuthenticated()) 
+        if(isAuth !== null) 
         {
             next('/')
         }

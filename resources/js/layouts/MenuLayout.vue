@@ -1,13 +1,16 @@
 <template>
     <main>
-        <Navigation />
-        <slot></slot>
+        <SideNav/>
+        <div class="absolute right-0 w-full md:w-5/6">
+            <slot></slot>
+        </div>
     </main>
 </template>
 
 <script>
 import axios from "axios"
 import Navigation from "../components/Navigation.vue"
+import SideNav from "../components/SideNav.vue"
 
 export default {
     data() {
@@ -17,7 +20,7 @@ export default {
         }
     },
     components: {
-        Navigation
+        Navigation, SideNav
     },
     methods: {
         isActive(link) {

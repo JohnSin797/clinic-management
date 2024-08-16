@@ -24,9 +24,3 @@ Route::get('{path}', function () {
 })->where('path', '.+');
 
 Route::post('/login', [AuthController::class, 'login']);
-
-Route::controller(PatientController::class)->prefix('patient')->group(function() {
-    Route::post('/retrieve', 'retrieve');
-    Route::get('/index', 'index');
-    Route::post('/store', 'store');
-});

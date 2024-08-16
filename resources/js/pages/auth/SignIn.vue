@@ -30,6 +30,7 @@
 <script>
     import axios from 'axios';
     import Swal from 'sweetalert2';
+    import { useAuthStore } from '../../store/auth';
     axios.defaults.withCredentials = true;
     export default {
         data() {
@@ -40,19 +41,16 @@
         },
         methods: {
             handleSubmit() {
+                const store = useAuthStore()
                 axios.post('/login', {
                     email: this.email,
                     password: this.password
                 })
                 .then(response=>{
-                    const now = new Date()
-                    const token = {
-                        value: response.data.access_token,
-                        user: response.data.user,
-                        expiry: now.getTime() + 18000000
-                    }
-                    localStorage.setItem('clinic-management-token', JSON.stringify(token))
-                    axios.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`
+                    const token = response.data.access_token
+                    const user = response.data.user
+                    store.getToken(token)
+                    store.getUser(user)
                     this.$router.push('/')
                 })
                 .catch(error=>{

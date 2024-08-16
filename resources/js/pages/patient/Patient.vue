@@ -1,6 +1,6 @@
 <template>
     <div class="w-full min-h-screen flex flex-col justify-center items-center">
-        <section class="w-96 md:w-3/5 min-h-80 p-10 rounded-lg shadow-xl bg-gray-900 mt-20">
+        <section class="w-96 md:w-4/5 min-h-80 p-10 rounded-lg shadow-xl bg-gray-900 mt-20">
             <h1 class="text-2xl text-gray-400 mb-5">Patients</h1>
             <table class="w-full table-fixed">
                 <thead class="bg-black sticky top-12 text-gray-300">

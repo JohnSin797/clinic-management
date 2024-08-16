@@ -43,7 +43,7 @@
             }
         },
         mounted() {
-            this.test()
+            // this.test()
         }
     }
 </script>
