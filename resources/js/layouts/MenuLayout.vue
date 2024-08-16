@@ -1,6 +1,7 @@
 <template>
     <main>
         <SideNav/>
+        <TopNav />
         <div class="absolute right-0 w-full md:w-5/6">
             <slot></slot>
         </div>
@@ -11,6 +12,7 @@
 import axios from "axios"
 import Navigation from "../components/Navigation.vue"
 import SideNav from "../components/SideNav.vue"
+import TopNav from "../components/TopNav.vue"
 
 export default {
     data() {
@@ -20,7 +22,7 @@ export default {
         }
     },
     components: {
-        Navigation, SideNav
+        Navigation, SideNav, TopNav
     },
     methods: {
         isActive(link) {

@@ -10,6 +10,30 @@ class Patient extends Model
     use HasFactory;
 
     protected $fillable = [
-        'id_number', 'first_name', 'last_name', 'date_of_birth', 'employment_status'
+        'id_number', 
+        'first_name',
+        'middle_name', 
+        'last_name', 
+        'extension',
+        'date_of_birth', 
+        'employment_status',
+        'department',
+        'address',
+        'father_name',
+        'father_occupation',
+        'father_date_of_birth',
+        'mother_name',
+        'mother_occupation',
+        'mother_date_of_birth',
+        'person_to_contact_name',
+        'person_to_contact_number',
+        'other_person_to_contact_name',
+        'other_person_to_contact_number',
+        'relation_to_other_person'
     ];
+
+    public function consultations()
+    {
+        return $this->hasMany(Consultation::class, 'patient_id', 'id');
+    }
 }

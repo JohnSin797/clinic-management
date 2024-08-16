@@ -93,7 +93,7 @@
             <div class="text-gray-200 mb-4">
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full">
                     <label for="address" class="text-xs font-bold">Address:</label>
-                    <textarea name="address" id="address" rows="2" class="outline-none resize-none w-full rounded bg-gray-900 p-2"></textarea>
+                    <textarea name="address" id="address" rows="2" class="outline-none resize-none w-full rounded bg-gray-900 p-2" v-model="this.address"></textarea>
                 </div>
             </div>
         </section>
@@ -187,6 +187,7 @@
                         name="emergency_contact_1" 
                         id="emergency_contact_1" 
                         class="w-full rounded outline-none p-2 bg-gray-900" 
+                        v-model="this.emergency_contact_1"
                         placeholder="Contact number"
                     />
                 </div>
@@ -286,9 +287,24 @@ import Swal from 'sweetalert2';
                 axios.post('/api/patient/store', {
                     id_number: this.id_number,
                     first_name: this.first_name,
+                    middle_name: this.middle_name,
                     last_name: this.last_name,
+                    extension: this.name_extension,
                     date_of_birth: this.date_of_birth,
                     employment_status: this.employment_status,
+                    department: this.department,
+                    address: this.address,
+                    father_name: this.father_name,
+                    father_occupation: this.father_occupation,
+                    father_date_of_birth: this.father_date_of_birth,
+                    mother_name: this.mother_name,
+                    mother_occupation: this.mother_occupation,
+                    mother_date_of_birth: this.mother_date_of_birth,
+                    person_to_contact_name: this.emergency_option_1,
+                    person_to_contact_number: this.emergency_contact_1,
+                    other_person_to_contact_name: this.emergency_option_2,
+                    other_person_to_contact_number: this.emergency_contact_2,
+                    relation_to_other_person: this.option_2_relation
                 })
                 .then(response => {
                     Swal.fire({

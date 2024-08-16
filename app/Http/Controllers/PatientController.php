@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\Patient\StoreRequest;
 use App\Models\Patient;
+use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
@@ -25,7 +26,12 @@ class PatientController extends Controller
 
     public function index()
     {
-        $patients = Patient::get();
+        $patients = Patient::select(
+            DB::raw('CONCAT(first_name, " ", middle_name, " ", last_name, " ", extension) as name'),
+            'employment_status',
+            'department',
+            'last_visit'
+        )->get();
         if ($patients) {
             return response()->json([
                 'message' => 'Patients found.',

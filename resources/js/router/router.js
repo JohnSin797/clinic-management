@@ -7,6 +7,8 @@ import Home from "../pages/Home.vue";
 import Patient from "../pages/patient/Patient.vue";
 import CreatePatient from '../pages/patient/Create.vue';
 import CreateAssessment from '../pages/assessment/Create.vue';
+import Consultation from "../pages/consultation/Consultation.vue";
+import Examination from "../pages/examination/Examination.vue";
 
 const routes = [
     {
@@ -42,6 +44,18 @@ const routes = [
         name: 'assessment-create',
         path: '/assessment/create/:id_number?',
         component: CreateAssessment,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'consultation',
+        path: '/consultation',
+        component: Consultation,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'examination',
+        path: '/medical-examination',
+        component: Examination,
         meta: { Layout: true, requiresAuth: true }
     },
 ];

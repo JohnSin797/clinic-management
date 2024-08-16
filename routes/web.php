@@ -3,6 +3,8 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ConsultationController;
+use App\Http\Controllers\ExaminationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,3 +26,12 @@ Route::get('{path}', function () {
 })->where('path', '.+');
 
 Route::post('/login', [AuthController::class, 'login']);
+
+Route::prefix('consultation')->controller(ConsultationController::class)->group(function() {
+    Route::get('/', 'index');
+    Route::post('/store', 'store');
+});
+
+Route::prefix('examination')->controller(ExaminationController::class)->group(function() {
+    Route::get('/', 'index');
+});

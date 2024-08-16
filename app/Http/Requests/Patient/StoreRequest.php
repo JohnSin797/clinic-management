@@ -23,10 +23,25 @@ class StoreRequest extends FormRequest
     {
         return [
             'first_name' => 'required',
+            'middle_name' => 'required',
             'last_name' => 'required',
+            'extension' => 'nullable',
             'date_of_birth' => 'required',
             'employment_status' => 'required',
-            'id_number' => 'required|unique:patients,id_number'
+            'id_number' => 'required|unique:patients,id_number',
+            'department' => 'required',
+            'address' => 'required',
+            'father_name' => 'nullable',
+            'father_occupation' => 'nullable',
+            'father_date_of_birth' => 'nullable',
+            'mother_name' => 'nullable',
+            'mother_occupation' => 'nullable',
+            'mother_date_of_birth' => 'nullable',
+            'person_to_contact_name' => 'nullable',
+            'person_to_contact_number' => 'nullable',
+            'other_person_to_contact_name' => 'nullable',
+            'other_person_to_contact_number' => 'nullable',
+            'relation_to_other_person' => 'nullable',
         ];
     }
 }
