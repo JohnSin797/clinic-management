@@ -10,10 +10,10 @@ export const useAuthStore = defineStore('auth', {
         token: (state) => state.accessToken,
     },
     actions: {
-        async getToken(token) {
+        getToken(token) {
             this.accessToken = token;
         },
-        async getUser(user) {
+        getUser(user) {
             this.authUser = user;
         },
     },

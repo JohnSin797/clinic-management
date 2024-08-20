@@ -29,7 +29,8 @@ class Patient extends Model
         'person_to_contact_number',
         'other_person_to_contact_name',
         'other_person_to_contact_number',
-        'relation_to_other_person'
+        'relation_to_other_person',
+        'last_visit',
     ];
 
     public function consultations()

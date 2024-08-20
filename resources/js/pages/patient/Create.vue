@@ -313,7 +313,7 @@ import Swal from 'sweetalert2';
                         icon: 'success',
                         showConfirmButton: true,
                     })
-                    this.$router.push(`/assessment/create/${response.data?.patient?.id_number}`)
+                    this.$router.push('/patient')
                 })
                 .catch(error => {
                     console.log(error)

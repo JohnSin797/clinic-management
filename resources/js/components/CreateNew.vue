@@ -25,10 +25,20 @@
 </template>
 
 <script>
+    import { useMainStore } from '../store/main'
+    import Swal from 'sweetalert2'
+
     export default {
+        props: {
+            proceedTo: {
+                type: String,
+                required: false
+            }
+        },
         data() {
             return {
                 isOpen: false,
+                id_number: '',
             }
         },
         computed: {
@@ -39,7 +49,27 @@
         },
         methods: {
             retrievePatient() {
-
+                const store = useMainStore()
+                axios.post('/api/patient/retrieve', {
+                    id_number: this.id_number
+                })
+                .then(response => {
+                    if(response.data?.patient) {
+                        store.getPatient(response.data?.patient)
+                        this.$router.push(`${this.proceedTo}/${response.data?.patient?.id_number}`) 
+                    }
+                })
+                .catch(error => {
+                    console.log(error)
+                    Swal.fire({
+                        title: 'Patient not found',
+                        text: 'You will now be redirected to patient create form page.',
+                        icon: 'info',
+                        showConfirmButton: true,
+                        confirmButtonColor: 'blue',
+                    })
+                    this.$router.push(`/patient/create/${this.id_number}`)
+                })
             }
         }
     }

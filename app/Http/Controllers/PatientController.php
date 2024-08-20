@@ -30,7 +30,8 @@ class PatientController extends Controller
             DB::raw('CONCAT(first_name, " ", middle_name, " ", last_name, " ", extension) as name'),
             'employment_status',
             'department',
-            'last_visit'
+            'last_visit',
+            'id_number'
         )->get();
         if ($patients) {
             return response()->json([
@@ -59,5 +60,25 @@ class PatientController extends Controller
         return response()->json([
             'message' => 'Failed to create patient.'
         ], 402);
+    }
+
+    public function delete(Request $request)
+    {
+        $result = Patient::where('id_number', $request->id_number)->first();
+        $result->delete();
+        if ($result) {
+            return response()->json([
+                'message' => 'OK'
+            ], 200);
+        }
+
+        return response()->json([
+            'message' => 'Failed to delete'
+        ], 500);
+    }
+
+    public function archive()
+    {
+        
     }
 }

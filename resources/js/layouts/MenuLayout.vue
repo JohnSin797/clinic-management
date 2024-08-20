@@ -1,7 +1,7 @@
 <template>
     <main>
-        <SideNav/>
-        <TopNav />
+        <SideNav :isOpen="this.menu"/>
+        <TopNav @handleMenu="onChangeMenu" />
         <div class="absolute right-0 w-full md:w-5/6">
             <slot></slot>
         </div>
@@ -18,7 +18,7 @@ export default {
     data() {
         return {
             menu: true,
-            full_name: ''
+            full_name: '',
         }
     },
     components: {

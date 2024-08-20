@@ -6,8 +6,10 @@ import SignIn from "../pages/auth/SignIn.vue";
 import Home from "../pages/Home.vue";
 import Patient from "../pages/patient/Patient.vue";
 import CreatePatient from '../pages/patient/Create.vue';
+import ViewPatient from '../pages/patient/View.vue';
 import CreateAssessment from '../pages/assessment/Create.vue';
 import Consultation from "../pages/consultation/Consultation.vue";
+import CreateConsultation from "../pages/consultation/Create.vue";
 import Examination from "../pages/examination/Examination.vue";
 
 const routes = [
@@ -41,6 +43,12 @@ const routes = [
         meta: { Layout: true, requiresAuth: true }
     },
     {
+        name: 'patient-view',
+        path: '/patient/view/:id_number',
+        component: ViewPatient,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
         name: 'assessment-create',
         path: '/assessment/create/:id_number?',
         component: CreateAssessment,
@@ -50,6 +58,12 @@ const routes = [
         name: 'consultation',
         path: '/consultation',
         component: Consultation,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'consultation-create',
+        path: '/consultation/create/:id_number',
+        component: CreateConsultation,
         meta: { Layout: true, requiresAuth: true }
     },
     {

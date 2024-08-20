@@ -1,17 +1,31 @@
 <template>
     <div class="w-full max-h-96 relative overflow-y-auto">
-        <table class="w-full table-fixed text-center">
-            <thead class="p-2 bg-black sticky top-0">
+        <table class="w-full table-auto md:table-fixed text-center">
+            <thead class="bg-black sticky top-0">
                 <tr>
-                    <th v-for="(header, index) in capitalizedHeaders" :key="index">
+                    <th class="p-1" v-for="(header, index) in capitalizedHeaders" :key="index">
                         {{ header }}
                     </th>
+                    <th class="p-1" v-if="destination">Action</th>
                 </tr>
             </thead>
             <tbody>
                 <tr class="border-b" v-for="(row, rowIndex) in rows" :key="rowIndex">
-                    <td class="p-4 text-sm" v-for="(header, colIndex) in headers" :key="colIndex" :class="[header, header == 'employment_status' && row[header]]">
+                    <td class="p-4 text-sm" v-for="(header, colIndex) in index" :key="colIndex" :class="[header, header == 'employment_status' && row[header]]">
                         {{ this.formatValue(row[header]) }}
+                    </td>
+                    <td v-if="destination">
+                        <div class="flex flex-wrap gap-2 p-4 text-xs">
+                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-blue-400 hover:bg-indigo-900 font-bold" :to="`/${destination}/view/${row.id_number}`">
+                                View
+                            </router-link>
+                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-green-600 hover:bg-green-900 font-bold" :to="`/${destination}/edit/${row.id_number}`">
+                                Edit
+                            </router-link>
+                            <button class="p-2 rounded w-full md:max-w-1/3 bg-red-400 hover:bg-red-900 font-bold" @click="confirmDelete(row.id_number)">
+                                Delete
+                            </button>
+                        </div>
                     </td>
                 </tr>
             </tbody>
@@ -20,6 +34,9 @@
 </template>
 
 <script>
+import axios from 'axios';
+import Swal from 'sweetalert2';
+
     export default {
         name: "DataTable",
         props: {
@@ -31,6 +48,14 @@
                 type: Array,
                 required: true,
             },
+            index: {
+                type: Array,
+                required: true,
+            },
+            destination: {
+                type: String,
+                required: false,
+            }
         },
         computed: {
             capitalizedHeaders() {
@@ -71,6 +96,35 @@
 
                 return value;
             },
+            confirmDelete(id) {
+                Swal.fire({
+                    title: 'Delete',
+                    text: 'Are you sure you want to continue?',
+                    icon: 'question',
+                    showConfirmButton: true,
+                    confirmButtonColor: 'blue',
+                    showCancelButton: true,
+                    cancelButtonColor: 'red',
+                })
+                .then(response => {
+                    if(response.isConfirmed) {
+                        this.handleDelete(id)
+                    }
+                })
+            },
+            handleDelete(id) {
+                axios.post(`/api/${this.destination}/delete`, {id_number: id})
+                .then(() => {
+                    this.$emit('itemDeleted', id)
+                    Swal.fire({
+                        title: 'Successfully Deleted',
+                        icon: 'success',
+                    })
+                })
+                .catch(error => {
+                    console.log(error)
+                })
+            }
         }
     }
 </script>

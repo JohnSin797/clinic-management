@@ -15,7 +15,8 @@ class ConsultationController extends Controller
                 DB::raw('CONCAT(patients.first_name, " ", patients.last_name) as name'),
                 'patients.employment_status',
                 'patients.department',
-                'consultations.date_created'
+                'consultations.date_created',
+                'patients.id_number'
             )
             ->get();
         if ($consultations) {

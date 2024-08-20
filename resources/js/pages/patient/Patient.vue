@@ -8,25 +8,10 @@
                     <span class="text-xs font-bold">Add new</span>
                 </router-link>
             </div>
-            <DataTable :headers="this.tableHeaders" :rows="this.patients" />
-            <!-- <table class="w-full table-fixed">
-                <thead class="bg-black sticky top-12 text-gray-300">
-                    <tr>
-                        <th>Name</th>
-                        <th>Status</th>
-                        <th>Department</th>
-                        <th>Last visit</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="border-b" v-for="(patient, key) in this.patients" :key="key">
-                        <td class="p-4 text-sm font-bold text-blue-400">{{ patient.first_name }} {{ patient.last_name }}</td>
-                        <td class="p-4 text-sm" :class="[patient.employment_status == 'student' ? 'text-green-400' : 'text-violet-600']">{{ patient.employment_status }}</td>
-                        <td class="p-4 text-sm text-orange-400">{{ patient.department }}</td>
-                        <td class="p-4 text-sm text-indigo-600">{{ patient.last_visit }}</td>
-                    </tr>
-                </tbody>
-            </table> -->
+            <DataTable :headers="this.tableHeaders" :rows="this.patients" :index="this.tableIndex" @itemDeleted="removeItem" destination="patient" />
+        </section>
+        <section class="min-h-screen">
+            asd
         </section>
     </div>
 </template>
@@ -37,7 +22,8 @@
     export default {
         data() {
             return {
-                tableHeaders: ['name', 'employment_status', 'department', 'last_visit'],
+                tableHeaders: ['name', 'ID number', 'employment_status', 'department', 'last_visit'],
+                tableIndex: ['name', 'id_number', 'employment_status', 'department', 'last_visit'],
                 patients: [{}]
             }
         },
@@ -57,6 +43,9 @@
                 .catch(error => {
                     console.log(error)
                 })
+            },
+            removeItem(id) {
+                this.patients = this.patients.filter(item => item.id_number !== id)
             }
         }
     }

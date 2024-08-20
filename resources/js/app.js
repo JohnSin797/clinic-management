@@ -2,7 +2,7 @@ import './bootstrap';
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import piniaPluginPersistedState from "pinia-plugin-persistedstate";
-import { useAuthStore } from './store/auth';
+// import { useAuthStore } from './store/auth';
 import router from './router/router';
 import { OhVueIcon, addIcons } from "oh-vue-icons";
 import * as FaIcons from "oh-vue-icons/icons/fa";
@@ -21,4 +21,4 @@ app.use(router)
 app.component('v-icon', OhVueIcon);
 app.mount('#app');
 
-const authStore = useAuthStore();
+// const authStore = useAuthStore();
