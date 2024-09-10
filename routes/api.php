@@ -23,6 +23,7 @@ Route::controller(PatientController::class)->prefix('patient')->group(function()
     Route::post('/retrieve', 'retrieve');
     Route::get('/index', 'index');
     Route::post('/store', 'store');
+    Route::put('/update/{patient}', 'update');
     Route::post('/delete', 'delete');
     Route::get('/archive', 'archive');
 });

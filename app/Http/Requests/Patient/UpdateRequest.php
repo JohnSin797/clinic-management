@@ -4,7 +4,7 @@ namespace App\Http\Requests\Patient;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreRequest extends FormRequest
+class UpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,14 +21,17 @@ class StoreRequest extends FormRequest
      */
     public function rules(): array
     {
+        $id = $this->route('patient');
+
         return [
+            'id' => 'required|exists:patients,id',
             'first_name' => 'required',
             'middle_name' => 'required',
             'last_name' => 'required',
             'extension' => 'nullable',
             'date_of_birth' => 'required',
             'employment_status' => 'required',
-            'id_number' => 'required|unique:patients,id_number',
+            'id_number' => 'required|unique:patients,id_number,' . $id,
             'department' => 'required',
             'address' => 'required',
             'father_name' => 'nullable',

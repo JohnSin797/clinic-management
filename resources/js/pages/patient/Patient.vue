@@ -8,10 +8,10 @@
                     <span class="text-xs font-bold">Add new</span>
                 </router-link>
             </div>
-            <DataTable :headers="this.tableHeaders" :rows="this.patients" :index="this.tableIndex" @itemDeleted="removeItem" destination="patient" />
-        </section>
-        <section class="min-h-screen">
-            asd
+            <div class="w-full h-80 2xl:h-96 overflow-y-auto relative">
+                <Loader v-if="this.loading" />
+                <DataTable :headers="this.tableHeaders" :rows="this.patients" :index="this.tableIndex" @itemDeleted="removeItem" destination="patient" />
+            </div>
         </section>
     </div>
 </template>
@@ -19,22 +19,25 @@
 <script>
     import DataTable from '../../components/DataTable.vue';
     import axios from 'axios';
+    import Loader from '../../components/Loader.vue';
     export default {
         data() {
             return {
                 tableHeaders: ['name', 'ID number', 'employment_status', 'department', 'last_visit'],
                 tableIndex: ['name', 'id_number', 'employment_status', 'department', 'last_visit'],
-                patients: [{}]
+                patients: [],
+                loading: false,
             }
         },
         components: {
-            DataTable
+            DataTable, Loader
         },
         mounted() {
             this.getPatients()
         },
         methods: {
             getPatients() {
+                this.loading = true
                 axios.get('/api/patient/index')
                 .then(response => {
                     console.log(response)
@@ -42,6 +45,9 @@
                 })
                 .catch(error => {
                     console.log(error)
+                })
+                .finally(()=>{
+                    this.loading = false
                 })
             },
             removeItem(id) {

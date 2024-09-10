@@ -21,7 +21,11 @@
                     v-model="this.password"
                     required
                 />
-                <button type="submit" class="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500">sign in</button>
+                <button type="submit" class="w-full p-3 bg-indigo-600 rounded text-white hover:bg-indigo-500 mb-5">sign in</button>
+                <p class="text-center text-xs">
+                    Register an account? 
+                    <router-link to="/sign-up" class="text-xs text-center hover:text-cyan-400 font-bold">sign up</router-link>
+                </p>
             </form>
         </section>
     </div>
@@ -42,7 +46,7 @@
         methods: {
             handleSubmit() {
                 const store = useAuthStore()
-                axios.post('/login', {
+                axios.post('/user/login', {
                     email: this.email,
                     password: this.password
                 })

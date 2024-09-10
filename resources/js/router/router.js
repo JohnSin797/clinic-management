@@ -3,10 +3,12 @@ import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store/auth";
 import PageNotFound from "../pages/PageNotFound.vue";
 import SignIn from "../pages/auth/SignIn.vue";
+import SignUp from "../pages/auth/SignUp.vue";
 import Home from "../pages/Home.vue";
 import Patient from "../pages/patient/Patient.vue";
 import CreatePatient from '../pages/patient/Create.vue';
 import ViewPatient from '../pages/patient/View.vue';
+import EditPatient from "../pages/patient/Edit.vue";
 import CreateAssessment from '../pages/assessment/Create.vue';
 import Consultation from "../pages/consultation/Consultation.vue";
 import CreateConsultation from "../pages/consultation/Create.vue";
@@ -17,6 +19,12 @@ const routes = [
         name: 'sign-in',
         path: '/sign-in',
         component: SignIn,
+        meta: { Layout: false, requiresGuest: true }
+    },
+    {
+        name: 'sign-up',
+        path: '/sign-up',
+        component: SignUp,
         meta: { Layout: false, requiresGuest: true }
     },
     {
@@ -40,6 +48,12 @@ const routes = [
         name: 'patient-create',
         path: '/patient/create/:id_number?',
         component: CreatePatient,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'patient-edit',
+        path: '/patient/edit/:id_number?',
+        component: EditPatient,
         meta: { Layout: true, requiresAuth: true }
     },
     {

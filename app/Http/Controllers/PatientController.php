@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\Patient\StoreRequest;
+use App\Http\Requests\Patient\UpdateRequest;
 use App\Models\Patient;
 use Illuminate\Support\Facades\DB;
 
@@ -60,6 +61,17 @@ class PatientController extends Controller
         return response()->json([
             'message' => 'Failed to create patient.'
         ], 402);
+    }
+
+    public function update(UpdateRequest $request)
+    {
+        $validated = $request->validated();
+        $patient = Patient::find($validated['id']);
+        $patient->update($validated);
+
+        return response()->json([
+            'patient' => $patient,
+        ]);
     }
 
     public function delete(Request $request)

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Consultation;
+use App\Http\Requests\Consultation\StoreRequest;
 use Illuminate\Support\Facades\DB;
 
 class ConsultationController extends Controller
@@ -30,9 +31,18 @@ class ConsultationController extends Controller
         ], 500);
     }
 
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
         $validated = $request->validated();
+        $patient = Patient::find($validated['patient_id']);
+        $patient->update([
+            'blood_type' => $validated['blood_type'],
+            'height' => $validated['height'],
+            'weight' => $validated['weight'],
+            'food_allergy' => $validated['food_allergy'],
+            'medicine_allergy' => $validated['medicine_allergy'],
+            'other_allergy' => $validated['other_allergy'],
+        ]);
         $result = Consultation::create($validated);
         if ($result) {
             return response()->json([

@@ -31,6 +31,18 @@ class Patient extends Model
         'other_person_to_contact_number',
         'relation_to_other_person',
         'last_visit',
+        'blood_type',
+        'height',
+        'weight',
+        'food_allergy',
+        'medicine_allergy',
+        'other_allergy',
+    ];
+
+    protected $casts = [
+        'food_allergy' => 'array',
+        'medicine_allergy' => 'array',
+        'other_allergy' => 'array',
     ];
 
     public function consultations()

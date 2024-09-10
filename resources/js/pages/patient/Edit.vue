@@ -9,7 +9,7 @@
                         type="text" 
                         name="last_name" 
                         id="last_name" 
-                        v-model="this.last_name"
+                        v-model="this.patient.last_name"
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                         placeholder="Last name"
                     />
@@ -20,7 +20,7 @@
                         type="text" 
                         name="first_name" 
                         id="first_name" 
-                        v-model="this.first_name"
+                        v-model="this.patient.first_name"
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                         placeholder="First name"
                     />
@@ -31,7 +31,7 @@
                         type="text" 
                         name="middle_name" 
                         id="middle_name" 
-                        v-model="this.middle_name"
+                        v-model="this.patient.middle_name"
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                         placeholder="Middle name"
                     />
@@ -42,7 +42,7 @@
                         type="text" 
                         name="name_extension" 
                         id="name_extension" 
-                        v-model="this.name_extension"
+                        v-model="this.patient.name_extension"
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                         placeholder="Ext."
                     />
@@ -54,14 +54,14 @@
                     <input 
                         type="date" 
                         name="date_of_birth" 
-                        v-model="this.date_of_birth"
+                        v-model="this.patient.date_of_birth"
                         id="date_of_birth" 
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                     />
                 </div>
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full md:w-1/4">
                     <label for="employment_status" class="text-xs font-bold">Employment Status:</label>
-                    <select v-model="this.employment_status" name="employment_status" id="employment_status" class="w-full rounded bg-gray-900 outline-none p-2" >
+                    <select v-model="this.patient.employment_status" name="employment_status" id="employment_status" class="w-full rounded bg-gray-900 outline-none p-2" >
                         <option value="student">Student</option>
                         <option value="teacher">Teacher</option>
                         <option value="non-teaching staff">Non-Teaching Staff</option>
@@ -72,7 +72,7 @@
                     <input 
                         type="text" 
                         name="department" 
-                        v-model="this.department"
+                        v-model="this.patient.department"
                         id="department" 
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                         placeholder="Department"
@@ -84,8 +84,7 @@
                         type="text" 
                         name="id_number" 
                         id="id_number" 
-                        v-model="this.id_number" 
-                        :readonly="this.is_id_num_null"
+                        v-model="this.patient.id_number"
                         class="w-full rounded bg-gray-900 outline-none p-2" 
                     />
                 </div>
@@ -93,7 +92,7 @@
             <div class="text-gray-200 mb-4">
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full">
                     <label for="address" class="text-xs font-bold">Address:</label>
-                    <textarea name="address" id="address" rows="2" class="outline-none resize-none w-full rounded bg-gray-900 p-2" v-model="this.address"></textarea>
+                    <textarea name="address" id="address" rows="2" class="outline-none resize-none w-full rounded bg-gray-900 p-2" v-model="this.patient.address"></textarea>
                 </div>
             </div>
             <div class="flex flex-col md:flex-row gap-4 text-gray-400 mb-4">
@@ -104,6 +103,7 @@
                         name="blood_type" 
                         id="blood_type" 
                         class="w-full rounded bg-gray-900 outline-none p-2" 
+                        v-model="this.patient.blood_type"
                     />
                 </div>
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full md:w-1/3">
@@ -113,6 +113,7 @@
                         name="height" 
                         id="height" 
                         class="w-full rounded bg-gray-900 outline-none p-2" 
+                        v-model="this.patient.height"
                     />
                 </div>
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full md:w-1/3">
@@ -122,6 +123,7 @@
                         name="weight" 
                         id="weight" 
                         class="w-full rounded bg-gray-900 outline-none p-2" 
+                        v-model="this.patient.weight"
                     />
                 </div>
             </div>
@@ -131,13 +133,13 @@
             <div class="flex flex-col gap-4 text-gray-200 mb-4 md:px-16">
                 <div class="group rounded p-3 w-full">
                     <label class="text-xs font-bold">Food allergy:</label>
-                    <div v-for="(food, idx) in this.food_allergy" class="flex justify-center items-center gap-4 mb-2">
+                    <div v-for="(food, idx) in this.patient.food_allergy" class="flex justify-center items-center gap-4 mb-2">
                         <input 
                             type="text" 
                             name="food_allergy" 
                             id="food_allergy" 
                             class="w-full rounded bg-gray-900 outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
-                            v-model="this.food_allergy[idx]"
+                            v-model="this.patient.food_allergy[idx]"
                         />
                         <button v-if="idx == 0" @click="addItem('food_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
                             <v-icon name="fa-plus" />
@@ -149,13 +151,13 @@
                 </div>
                 <div class="group rounded p-3 w-full">
                     <label class="text-xs font-bold">Medicine allergy:</label>
-                    <div v-for="(medicine, idx) in this.medicine_allergy" class="flex justify-center items-center gap-4 mb-2">
+                    <div v-for="(medicine, idx) in this.patient.medicine_allergy" class="flex justify-center items-center gap-4 mb-2">
                         <input 
                             type="text" 
                             name="medicine_allergy" 
                             id="medicine_allergy" 
                             class="w-full rounded bg-gray-900 outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
-                            v-model="this.medicine_allergy[idx]"
+                            v-model="this.patient.medicine_allergy[idx]"
                         />
                         <button v-if="idx == 0" @click="addItem('medicine_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
                             <v-icon name="fa-plus" />
@@ -167,13 +169,13 @@
                 </div>
                 <div class="group rounded p-3 w-full">
                     <label class="text-xs font-bold">Other allergy:</label>
-                    <div v-for="(other, idx) in this.other_allergy" class="flex justify-center items-center gap-4 mb-2">
+                    <div v-for="(other, idx) in this.patient.other_allergy" class="flex justify-center items-center gap-4 mb-2">
                         <input 
                             type="text" 
                             name="other_allergy" 
                             id="other_allergy" 
                             class="w-full rounded bg-gray-900 outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
-                            v-model="this.other_allergy[idx]"
+                            v-model="this.patient.other_allergy[idx]"
                         />
                         <button v-if="idx == 0" @click="addItem('other_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
                             <v-icon name="fa-plus" />
@@ -195,7 +197,7 @@
                         name="father_name" 
                         id="father_name" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.father_name"
+                        v-model="this.patient.father_name"
                         placeholder="Father's name" 
                     />
                 </div>
@@ -206,7 +208,7 @@
                         name="father_occupation" 
                         id="father_occupation" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.father_occupation"
+                        v-model="this.patient.father_occupation"
                         placeholder="Father's occupation" 
                     />
                 </div>
@@ -217,7 +219,7 @@
                         name="father_date_of_birth" 
                         id="father_date_of_birth" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.father_date_of_birth"
+                        v-model="this.patient.father_date_of_birth"
                     />
                 </div>
             </div>
@@ -229,7 +231,7 @@
                         name="mother_name" 
                         id="mother_name" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.mother_name"
+                        v-model="this.patient.mother_name"
                         placeholder="Mother's name" 
                     />
                 </div>
@@ -240,7 +242,7 @@
                         name="mother_occupation" 
                         id="mother_occupation" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.mother_occupation"
+                        v-model="this.patient.mother_occupation"
                         placeholder="Mother's occupation" 
                     />
                 </div>
@@ -251,7 +253,7 @@
                         name="mother_date_of_birth" 
                         id="mother_date_of_birth" 
                         class="w-full rounded bg-gray-900 outline-none p-2"
-                        v-model="this.mother_date_of_birth"
+                        v-model="this.patient.mother_date_of_birth"
                     />
                 </div>
             </div>
@@ -263,9 +265,9 @@
                     <label for="" class="text-xs font-bold">Person to contact</label>
                     <div class="flex items-center justify-start gap-4 p-3">
                         <label for="option_father" class="text-gray-400">Father</label>
-                        <input type="radio" name="option_father" id="option_father" class="mr-5" value="father" v-model="this.emergency_option_1">
+                        <input type="radio" name="option_father" id="option_father" class="mr-5" value="father" v-model="this.patient.person_to_contact_name">
                         <label for="option_mother" class="text-gray-400">Mother</label>
-                        <input type="radio" name="option_mother" id="option_mother" value="mother" v-model="this.emergency_option_1">
+                        <input type="radio" name="option_mother" id="option_mother" value="mother" v-model="this.patient.person_to_contact_name">
                     </div>
                 </div>
                 <div class="group rounded p-3 ring-2 ring-gray-400 focus-within:ring-indigo-600 w-full md:w-1/2">
@@ -275,7 +277,7 @@
                         name="emergency_contact_1" 
                         id="emergency_contact_1" 
                         class="w-full rounded outline-none p-2 bg-gray-900" 
-                        v-model="this.emergency_contact_1"
+                        v-model="this.patient.person_to_contact_number"
                         placeholder="Contact number"
                     />
                 </div>
@@ -289,7 +291,7 @@
                         name="emergency_to_be_notified" 
                         id="emergency_to_be_notified" 
                         class="w-full rounded outline-none p-2 bg-gray-900" 
-                        v-model="this.emergency_option_2"
+                        v-model="this.patient.other_person_to_contact_name"
                         placeholder="Name"
                     />
                 </div>
@@ -300,7 +302,7 @@
                         name="emergency_contact_2" 
                         id="emergency_contact_2" 
                         class="w-full rounded outline-none p-2 bg-gray-900" 
-                        v-model="this.emergency_contact_2"
+                        v-model="this.patient.other_person_to_contact_number"
                         placeholder="Contact number"
                     />
                 </div>
@@ -311,12 +313,12 @@
                         name="relation" 
                         id="relation" 
                         class="w-full rounded outline-none p-2 bg-gray-900" 
-                        v-model="this.option_2_relation"
+                        v-model="this.patient.relation_to_other_person"
                         placeholder="Relation"
                     />
                 </div>
             </div>
-            <button @click="createPatient" class="w-full md:w-1/2 p-3 rounded bg-indigo-600 hover:bg-indigo-500">Create</button>
+            <button @click="updatePatient" class="w-full md:w-1/2 p-3 rounded bg-indigo-600 hover:bg-indigo-500">Update</button>
         </section>
     </div>
 </template>
@@ -327,109 +329,83 @@ import Swal from 'sweetalert2';
     export default {
         data() {
             return {
-                first_name: '',
-                last_name: '',
-                middle_name: '',
-                name_extension: '',
-                date_of_birth: '',
-                gender: '',
-                nationality: '',
-                religion: '',
-                address: '',
-                contact: '',
-                email: '',
-                employment_status: 'student',
-                department: '',
-                id_number: '',
-                father_name: '',
-                father_date_of_birth: '',
-                father_occupation: '',
-                mother_name: '',
-                mother_date_of_birth: '',
-                mother_occupation: '',
-                emergency_to_be_notified_1: '',
-                emergency_option_1: 'father',
-                emergency_contact_1: '',
-                emergency_option_2: '',
-                emergency_contact_2: '',
-                option_2_relation: '',
-                is_id_num_null: false,
-                blood_type: '',
-                height: '',
-                weight: '',
-                food_allergy: [''],
-                medicine_allergy: [''],
-                other_allergy: [''],
-            }
-        },
-        created() {
-            this.setIdNumber()
-        },
-        watch: {
-            '$route.params.id_number': function(newId) {
-                this.id_number = newId
-                this.is_id_num_null = newId != null ? true : false
+                patient: {
+                    id: '',
+                    id_number: '',
+                    first_name: '',
+                    middle_name: '',
+                    last_name: '',
+                    extension: '',
+                    date_of_birth: '',
+                    employment_status: '',
+                    department: '',
+                    address: '',
+                    father_name: '',
+                    father_occupation: '',
+                    father_date_of_birth: '',
+                    mother_name: '',
+                    mother_occupation: '',
+                    mother_date_of_birth: '',
+                    person_to_contact_name: '',
+                    person_to_contact_number: '',
+                    other_person_to_contact_name: '',
+                    other_person_to_contact_number: '',
+                    relation_to_other_person: '',
+                    blood_type: '',
+                    height: '',
+                    weight: '',
+                    food_allergy: [''],
+                    medicine_allergy: [''],
+                    other_allergy: [''],
+                }
             }
         },
         methods: {
             addItem(array) {
-                console.log('clk')
-                let temp = [...this[array]]
+                let temp = [...this.patient[array]]
                 temp.push('')
-                this[array] = temp
+                this.patient[array] = temp
             },
             deleteItem(index, array) {
-                let temp = [...this[array]]
+                let temp = [...this.patient[array]]
                 temp.splice(index, 1)
-                this[array] = temp
+                this.patient[array] = temp
             },
-            setIdNumber() {
-                const r = this.$route.params.id_number
-                this.id_number = this.$route.params.id_number
-                this.is_id_num_null = (r == null || r == '' ? false : true)
-            },
-            createPatient() {
-                axios.post('/api/patient/store', {
-                    id_number: this.id_number,
-                    first_name: this.first_name,
-                    middle_name: this.middle_name,
-                    last_name: this.last_name,
-                    extension: this.name_extension,
-                    date_of_birth: this.date_of_birth,
-                    employment_status: this.employment_status,
-                    department: this.department,
-                    address: this.address,
-                    father_name: this.father_name,
-                    father_occupation: this.father_occupation,
-                    father_date_of_birth: this.father_date_of_birth,
-                    mother_name: this.mother_name,
-                    mother_occupation: this.mother_occupation,
-                    mother_date_of_birth: this.mother_date_of_birth,
-                    person_to_contact_name: this.emergency_option_1,
-                    person_to_contact_number: this.emergency_contact_1,
-                    other_person_to_contact_name: this.emergency_option_2,
-                    other_person_to_contact_number: this.emergency_contact_2,
-                    relation_to_other_person: this.option_2_relation,
-                    blood_type: this.blood_type,
-                    height: this.height,
-                    weight: this.weight,
-                    food_allergy: this.food_allergy,
-                    medicine_allergy: this.medicine_allergy,
-                    other_allergy: this.other_allergy,
-                })
+            updatePatient() {
+                axios.put('/api/patient/update/' + this.patient.id, this.patient)
                 .then(response => {
+                    console.log(response)
                     Swal.fire({
                         title: 'Success',
                         text: response.data.message,
                         icon: 'success',
                         showConfirmButton: true,
                     })
-                    this.$router.push('/patient')
+                })
+                .catch(error => {
+                    Swal.fire({
+                        title: 'Error',
+                        text: error.response?.data?.message,
+                        icon: 'error',
+                    })
+                    console.log(error)
+                })
+            },
+            getPatient() {
+                const id = this.$route.params?.id_number
+                axios.post('/api/patient/retrieve', {
+                    id_number: id,
+                })
+                .then(response => {
+                    this.patient = response.data?.patient
                 })
                 .catch(error => {
                     console.log(error)
                 })
             }
-        }
+        },
+        mounted() {
+            this.getPatient()
+        },
     }
 </script>

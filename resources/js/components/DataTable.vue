@@ -1,5 +1,5 @@
 <template>
-    <div class="w-full max-h-96 relative overflow-y-auto">
+    <div class="w-full h-80 2xl:h-96 relative overflow-y-auto">
         <table class="w-full table-auto md:table-fixed text-center">
             <thead class="bg-black sticky top-0">
                 <tr>
@@ -34,8 +34,8 @@
 </template>
 
 <script>
-import axios from 'axios';
-import Swal from 'sweetalert2';
+    import axios from 'axios';
+    import Swal from 'sweetalert2';
 
     export default {
         name: "DataTable",
@@ -55,6 +55,11 @@ import Swal from 'sweetalert2';
             destination: {
                 type: String,
                 required: false,
+            }
+        },
+        data() {
+            return {
+                loading: true,
             }
         },
         computed: {

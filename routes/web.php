@@ -25,7 +25,10 @@ Route::get('{path}', function () {
     return view('welcome');
 })->where('path', '.+');
 
-Route::post('/login', [AuthController::class, 'login']);
+Route::prefix('user')->controller(AuthController::class)->group(function() {
+    Route::post('/login', 'login');
+    Route::post('/register', 'register');
+});
 
 Route::prefix('consultation')->controller(ConsultationController::class)->group(function() {
     Route::get('/', 'index');

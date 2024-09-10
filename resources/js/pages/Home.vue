@@ -1,6 +1,6 @@
 <template>
     <div class="flex justify-center items-center w-full min-h-screen">
-        <section class="w-96 p-10 rounded-lg shadow-xl bg-gray-900">
+        <!-- <section class="w-96 p-10 rounded-lg shadow-xl bg-gray-900">
             <h1 class="text-2xl text-gray-400 mb-5">Retrieve patient information</h1>
             <input 
                 type="text" 
@@ -11,7 +11,7 @@
                 placeholder="ID number"
             />
             <button @click="retrievePatient" class="w-full p-3 mb-4 bg-indigo-600 hover:bg-indigo-500 rounded">find</button>
-        </section>
+        </section> -->
     </div>
 </template>
 
