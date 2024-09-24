@@ -3,7 +3,7 @@
         <section class="w-96 md:w-4/5 min-h-80 p-10 rounded-lg shadow-xl bg-gray-900 mt-20">
             <div class="flex justify-between items-center mb-5">
                 <h1 class="text-2xl text-gray-400">Medical Examination</h1>
-                <CreateNew />
+                <CreateNew proceedTo="/examination/create" />
             </div>
             <DataTable :headers="this.tableHeaders" :rows="this.examinations" />
         </section>

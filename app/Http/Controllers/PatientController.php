@@ -32,7 +32,8 @@ class PatientController extends Controller
             'employment_status',
             'department',
             'last_visit',
-            'id_number'
+            'id_number',
+            'id'
         )->get();
         if ($patients) {
             return response()->json([
@@ -44,6 +45,21 @@ class PatientController extends Controller
         return response()->json([
             'message' => 'Failed to find patients.'
         ], 500);
+    }
+
+    public function show($id)
+    {
+        $patient = Patient::find($id);
+
+        if (!$patient) {
+            return response()->json([
+                'message' => 'Patient not fount'
+            ]);
+        }
+
+        return response()->json([
+            'patient' => $patient
+        ]);
     }
 
     public function store(StoreRequest $request)

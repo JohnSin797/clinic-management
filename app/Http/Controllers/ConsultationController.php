@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Consultation;
+use App\Models\Patient;
 use App\Http\Requests\Consultation\StoreRequest;
 use Illuminate\Support\Facades\DB;
 
@@ -16,19 +17,30 @@ class ConsultationController extends Controller
                 DB::raw('CONCAT(patients.first_name, " ", patients.last_name) as name'),
                 'patients.employment_status',
                 'patients.department',
-                'consultations.date_created',
-                'patients.id_number'
+                'consultations.created_at',
+                'patients.id_number',
+                'consultations.id'
             )
             ->get();
-        if ($consultations) {
-            return response()->json([
-                'message' => 'OK',
-                'consultations' => $consultations
-            ], 200);
-        }
         return response()->json([
-            'message' => 'Consultations not found'
-        ], 500);
+            'message' => 'OK',
+            'consultations' => $consultations
+        ], 200);
+    }
+
+    public function show($id)
+    {
+        $consultation = Consultation::find($id);
+
+        if (!$consultation) {
+            return response()->json([
+                'message' => 'Consultation not found'
+            ]);
+        }
+
+        return response()->json([
+            'consultation' => $consultation
+        ]);
     }
 
     public function store(StoreRequest $request)
@@ -43,7 +55,27 @@ class ConsultationController extends Controller
             'medicine_allergy' => $validated['medicine_allergy'],
             'other_allergy' => $validated['other_allergy'],
         ]);
-        $result = Consultation::create($validated);
+        $result = Consultation::create([
+            'patient_id' => $validated['patient_id'],
+            'blood_type' => $validated['blood_type'],
+            'height' => $validated['height'],
+            'weight' => $validated['weight'],
+            'food_allergy' => json_encode($validated['food_allergy']),
+            'medicine_allergy' => json_encode($validated['medicine_allergy']),
+            'other_allergy' => json_encode($validated['other_allergy']),
+            'is_pregnant' => $validated['is_pregnant'],
+            'is_disabled' => $validated['is_disabled'],
+            'past_present_illness' => $validated['past_present_illness'],
+            'illness' => $validated['illness'],
+            'is_operated' => $validated['is_operated'],
+            'date_of_operation' => $validated['date_of_operation'],
+            'type_of_operation' => $validated['type_of_operation'],
+            'hospital_name_operation' => $validated['hospital_name_operation'],
+            'is_hospitalized' => $validated['is_hospitalized'],
+            'hospital_name_confined' => $validated['hospital_name_confined'],
+            'physician' => $validated['physician'],
+            'diagnosis' => $validated['diagnosis'],
+        ]);
         if ($result) {
             return response()->json([
                 'message' => 'Consultation successfully created!'

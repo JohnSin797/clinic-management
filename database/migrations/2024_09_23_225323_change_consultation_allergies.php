@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('patients', function (Blueprint $table) {
+        Schema::table('consultations', function (Blueprint $table) {
             $table->json('food_allergy')->nullable()->change();
             $table->json('medicine_allergy')->nullable()->change();
             $table->json('other_allergy')->nullable()->change();
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('patients', function (Blueprint $table) {
+        Schema::table('consultations', function (Blueprint $table) {
             //
         });
     }

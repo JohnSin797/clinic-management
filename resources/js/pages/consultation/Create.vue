@@ -42,13 +42,67 @@
                             />
                         </div>
                     </div>
+                    <div class="group rounded p-3 w-full">
+                        <label class="text-xs font-bold text-gray-400">Food allergy:</label>
+                        <div v-for="(food, idx) in this.patient.food_allergy" class="flex justify-center items-center gap-4 mb-2">
+                            <input 
+                                type="text" 
+                                name="food_allergy" 
+                                id="food_allergy" 
+                                class="w-full rounded outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
+                                v-model="this.patient.food_allergy[idx]"
+                            />
+                            <button v-if="idx == 0" @click="addItem('food_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
+                                <v-icon name="fa-plus" />
+                            </button>
+                            <button v-else @click.prevent="deleteItem(idx, 'food_allergy')" class="p-2 rounded text-white bg-red-400 hover:bg-red-600">
+                                <v-icon name="fa-trash" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="group rounded p-3 w-full">
+                        <label class="text-xs font-bold text-gray-400">Medicine allergy:</label>
+                        <div v-for="(medicine, idx) in this.patient.medicine_allergy" class="flex justify-center items-center gap-4 mb-2">
+                            <input 
+                                type="text" 
+                                name="medicine_allergy" 
+                                id="medicine_allergy" 
+                                class="w-full rounded outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
+                                v-model="this.patient.medicine_allergy[idx]"
+                            />
+                            <button v-if="idx == 0" @click="addItem('medicine_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
+                                <v-icon name="fa-plus" />
+                            </button>
+                            <button v-else @click.prevent="deleteItem(idx, 'medicine_allergy')" class="p-2 rounded text-white bg-red-400 hover:bg-red-600">
+                                <v-icon name="fa-trash" />
+                            </button>
+                        </div>
+                    </div>
+                    <div class="group rounded p-3 w-full">
+                        <label class="text-xs font-bold text-gray-400">Other allergy:</label>
+                        <div v-for="(other, idx) in this.patient.other_allergy" class="flex justify-center items-center gap-4 mb-2">
+                            <input 
+                                type="text" 
+                                name="other_allergy" 
+                                id="other_allergy" 
+                                class="w-full rounded outline-none p-2 ring-2 ring-gray-400 focus:ring-indigo-600" 
+                                v-model="this.patient.other_allergy[idx]"
+                            />
+                            <button v-if="idx == 0" @click="addItem('other_allergy')" class="p-2 rounded text-white bg-green-400 hover:bg-green-600">
+                                <v-icon name="fa-plus" />
+                            </button>
+                            <button v-else @click.prevent="deleteItem(idx, 'other_allergy')" class="p-2 rounded text-white bg-red-400 hover:bg-red-600">
+                                <v-icon name="fa-trash" />
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </section>
             <section class="w-96 md:w-4/5 rounded-lg shadow-xl p-10 bg-gray-900">
                 <header class="mb-5 text-gray-200">
                     <h1 class="text-2xl font-bold">Assessment</h1>
                 </header>
-                <div class="w-full space-y-2 text-slate-900">
+                <div class="w-full space-y-4 text-slate-900">
                     <div class="w-full flex flex-col md:flex-row items-center justify-center gap-2">
                         <div class="group w-full md:w-1/2">
                             <label for="temperature" class="text-xs text-gray-400 font-bold">Temperature:</label>
@@ -59,9 +113,83 @@
                             <input type="text" name="" id="" class="w-full p-2 rounded" placeholder="Blood Pressure" />
                         </div>
                     </div>
+                    <div class="w-full flex flex-col md:flex-row items-center justify-center gap-2">
+                        <div class="group w-full md:w-1/4 flex gap-2">
+                            <label for="is_pregnant" class="text-xs text-gray-400 font-bold">Pergnant:</label>
+                            <input type="checkbox" class="w-4 h-4" name="is_pregnant" id="is_pregnant" v-model="is_pregnant" />
+                        </div>
+                        <div class="group w-full md:w-1/4 flex gap-2">
+                            <label for="is_disabled" class="text-xs text-gray-400 font-bold">Disabled:</label>
+                            <input type="checkbox" class="w-4 h-4" name="is_disabled" id="is_disabled" v-model="is_disabled" />
+                        </div>
+                        <div class="group w-full md:w-1/4 flex gap-2">
+                            <label for="is_operated" class="text-xs text-gray-400 font-bold">Operated:</label>
+                            <input type="checkbox" class="w-4 h-4" name="is_operated" id="is_operated" v-model="is_operated" />
+                        </div>
+                        <div class="group w-full md:w-1/4 flex gap-2">
+                            <label for="is_hospitalized" class="text-xs text-gray-400 font-bold">Hospitalized:</label>
+                            <input type="checkbox" class="w-4 h-4" name="is_hospitalized" id="is_hospitalized" v-model="is_hospitalized" />
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col md:flex-row items-center justify-center gap-2">
+                        <div class="w-full md:w-1/6">
+                            <p class="text-xs text-gray-400 font-bold">if operated:</p>
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="date_of_operation" class="text-xs text-gray-400 font-bold">Date of Operation:</label>
+                            <input type="date" name="date_of_operation" id="date_of_operation" class="w-full p-2 rounded" :disabled="!is_operated" v-model="date_of_operation" />
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="type_of_operation" class="text-xs text-gray-400 font-bold">Type of Operation:</label>
+                            <input type="text" name="type_of_operation" id="type_of_operation" class="w-full p-2 rounded" :disabled="!is_operated" v-model="type_of_operation" />
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="hospital_name_operation" class="text-xs text-gray-400 font-bold">Hospital Name:</label>
+                            <input type="text" name="hospital_name_operation" id="hospital_name_operation" class="w-full p-2 rounded" :disabled="!is_operated" v-model="hospital_name_operation" />
+                        </div>
+                    </div>
+                    <div class="w-full flex flex-col md:flex-row items-center justify-center gap-2">
+                        <div class="w-full md:w-1/6">
+                            <p class="text-xs text-gray-400 font-bold">if hospitalized:</p>
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="hospital_name_confined" class="text-xs text-gray-400 font-bold">Hospital Name:</label>
+                            <input type="text" name="hospital_name_confined" id="hospital_name_confined" class="w-full p-2 rounded" :disabled="!is_hospitalized" v-model="hospital_name_confined"/>
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="physician" class="text-xs text-gray-400 font-bold">Physician:</label>
+                            <input type="text" name="physician" id="physician" class="w-full p-2 rounded" :disabled="!is_hospitalized" v-model="physician" />
+                        </div>
+                        <div class="group w-full md:w-1/3">
+                            <label for="diagnosis" class="text-xs text-gray-400 font-bold">Diagnosis:</label>
+                            <input type="text" name="diagnosis" id="diagnosis" class="w-full p-2 rounded" :disabled="!is_hospitalized" v-model="diagnosis" />
+                        </div>
+                    </div>
+                    <div class="w-full">
+                        <label for="past_present_illness" class="text-xs text-gray-400 font-bold">Past Illness:</label>
+                        <textarea 
+                            name="past_present_illness" 
+                            id="past_present_illness" 
+                            rows="2" 
+                            class="w-full p-2 rounded resize-none" 
+                            placeholder="Type here..."
+                            v-model="past_present_illness"
+                        ></textarea>
+                    </div>
+                    <div class="w-full">
+                        <label for="illness" class="text-xs text-gray-400 font-bold">Past Illness:</label>
+                        <textarea 
+                            name="illness" 
+                            id="illness" 
+                            rows="2" 
+                            class="w-full p-2 rounded resize-none" 
+                            placeholder="Type here..."
+                            v-model="illness"
+                        ></textarea>
+                    </div>
                     <div class="w-full">
                         <label for="" class="text-xs text-gray-400 font-bold">Complaint:</label>
-                        <textarea name="" id="" ows="3" class="w-full p-2 rounded resize-none" placeholder="Type here..."></textarea>
+                        <textarea name="" id="" rows="3" class="w-full p-2 rounded resize-none" v-model="complaint" placeholder="Type here..."></textarea>
                     </div>
                 </div>
             </section>
@@ -133,13 +261,42 @@
                     blood_type: '',
                     height: '',
                     weight: '',
+                    food_allergy: [''],
+                    medicine_allergy: [''],
+                    other_allergy: [''],
                 },
+                is_pregnant: false,
+                is_disabled: false,
+                past_present_illness: '',
+                illness: '',
+                is_operated: false,
+                date_of_operation: '',
+                type_of_operation: '',
+                hospital_name_operation: '',
+                is_hospitalized: false,
+                hospital_name_confined: '',
+                physician: '',
+                diagnosis: '',
+                temperature: '',
+                blood_pressure: '',
+                complaint: ''
             }
         },
         components: {
             AssessmentForm
         },
         methods: {
+            addItem(array) {
+                console.log('clk')
+                let temp = [...this[array]]
+                temp.push('')
+                this[array] = temp
+            },
+            deleteItem(index, array) {
+                let temp = [...this[array]]
+                temp.splice(index, 1)
+                this[array] = temp
+            },
             addPrescription() {
                 var temp = this.prescriptions
                 temp.push('')
@@ -150,13 +307,29 @@
                 temp.splice(index, 1)
                 this.prescriptions = temp
             },
-            submitConsultationForm(formData) {
-                axios.post('/consultation/store', {
+            submitConsultationForm() {
+                axios.post('/api/consultation/store', {
+                    temperature: this.temperature,
+                    blood_pressure: this.blood_pressure,
                     patient_id: this.patient.id,
                     blood_type: this.patient.blood_type,
                     height: this.patient.height,
                     weight: this.patient.weight,
-                    
+                    food_allergy: this.patient.food_allergy,
+                    medicine_allergy: this.patient.medicine_allergy,
+                    other_allergy: this.patient.other_allergy,
+                    is_pregnant: this.is_pregnant,
+                    is_disabled: this.is_disabled,
+                    past_present_illness: this.past_present_illness,
+                    illness: this.illness,
+                    is_operated: this.is_operated,
+                    date_of_operation: this.date_of_operation,
+                    type_of_operation: this.type_of_operation,
+                    hospital_name_operation: this.hospital_name_operation,
+                    is_hospitalized: this.is_hospitalized,
+                    hospital_name_confined: this.hospital_name_confined,
+                    physician: this.physician,
+                    diagnosis: this.diagnosis,
                 })
                 .then(response => {
                     Swal.fire({

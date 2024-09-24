@@ -391,12 +391,23 @@ import Swal from 'sweetalert2';
                     console.log(error)
                 })
             },
+            // getPatient() {
+            //     const id = this.$route.params?.id_number
+            //     axios.post('/api/patient/retrieve', {
+            //         id_number: id,
+            //     })
+            //     .then(response => {
+            //         this.patient = response.data?.patient
+            //     })
+            //     .catch(error => {
+            //         console.log(error)
+            //     })
+            // }
             getPatient() {
-                const id = this.$route.params?.id_number
-                axios.post('/api/patient/retrieve', {
-                    id_number: id,
-                })
+                const id = this.$route.params.id_number
+                axios.get(`/api/patient/show/${id}`)
                 .then(response => {
+                    console.log(response)
                     this.patient = response.data?.patient
                 })
                 .catch(error => {
@@ -406,6 +417,7 @@ import Swal from 'sweetalert2';
         },
         mounted() {
             this.getPatient()
+
         },
     }
 </script>

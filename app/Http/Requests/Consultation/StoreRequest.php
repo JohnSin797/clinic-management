@@ -22,7 +22,7 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'patient_id' => 'required',
+            'patient_id' => 'required|exists:patients,id',
             'blood_type' => 'nullable',
             'height' => 'required',
             'weight' => 'required',
@@ -40,7 +40,9 @@ class StoreRequest extends FormRequest
             'is_hospitalized' => 'nullable',
             'hospital_name_confined' => 'nullable',
             'physician' => 'nullable',
-            'diagnosis' => 'nullable' 
+            'diagnosis' => 'nullable',
+            'temperature' => 'nullable',
+            'blood_pressure' => 'nullable',
         ];
     }
 }

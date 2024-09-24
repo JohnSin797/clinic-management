@@ -12,7 +12,11 @@ import EditPatient from "../pages/patient/Edit.vue";
 import CreateAssessment from '../pages/assessment/Create.vue';
 import Consultation from "../pages/consultation/Consultation.vue";
 import CreateConsultation from "../pages/consultation/Create.vue";
+import ViewConsultation from "../pages/consultation/View.vue";
 import Examination from "../pages/examination/Examination.vue";
+import CreateExamination from "../pages/examination/Create.vue";
+import Dental from "../pages/dental/Dental.vue";
+import CreateDental from "../pages/dental/Create.vue";
 
 const routes = [
     {
@@ -81,9 +85,33 @@ const routes = [
         meta: { Layout: true, requiresAuth: true }
     },
     {
+        name: 'consultation-view',
+        path: '/consultation/view/:consultation_id',
+        component: ViewConsultation,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
         name: 'examination',
         path: '/medical-examination',
         component: Examination,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'examination-create',
+        path: '/examination/create/:id_number',
+        component: CreateExamination,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'dental-consultation',
+        path: '/dental-consultation',
+        component: Dental,
+        meta: { Layout: true, requiresAuth: true }
+    },
+    {
+        name: 'dental-create',
+        path: '/dental/create/:id_number',
+        component: CreateDental,
         meta: { Layout: true, requiresAuth: true }
     },
 ];

@@ -5,7 +5,7 @@
                 <h1 class="text-2xl text-gray-400">Consultations</h1>
                 <CreateNew proceedTo="/consultation/create" />
             </div>
-            <DataTable :headers="this.tableHeaders" :rows="this.consultations" :index="this.tableIndex" />
+            <DataTable :headers="this.tableHeaders" :rows="this.consultations" :index="this.tableIndex" destination="consultation" />
         </section>
     </div>
 </template>
@@ -13,7 +13,7 @@
 <script>
     import axios from 'axios';
     import DataTable from '../../components/DataTable.vue';
-import CreateNew from '../../components/CreateNew.vue';
+    import CreateNew from '../../components/CreateNew.vue';
 
     export default {
         data() {
@@ -31,8 +31,13 @@ import CreateNew from '../../components/CreateNew.vue';
         },
         methods: {
             getConsultations() {
-                axios.get('/consultation')
+                axios.get('/api/consultation', {
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                })
                 .then(response => {
+                    console.log(response)
                     this.consultations = response.data?.consultations || [{}];
                 })
                 .catch(error => {

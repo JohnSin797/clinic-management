@@ -30,11 +30,6 @@ Route::prefix('user')->controller(AuthController::class)->group(function() {
     Route::post('/register', 'register');
 });
 
-Route::prefix('consultation')->controller(ConsultationController::class)->group(function() {
-    Route::get('/', 'index');
-    Route::post('/store', 'store');
-});
-
 Route::prefix('examination')->controller(ExaminationController::class)->group(function() {
     Route::get('/', 'index');
 });

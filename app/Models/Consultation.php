@@ -31,6 +31,12 @@ class Consultation extends Model
         'diagnosis'
     ];
 
+    protected $casts = [
+        'food_allergy' => 'array',
+        'medicine_allergy' => 'array',
+        'other_allergy' => 'array',
+    ];
+
     public function patient()
     {
         return $this->belongsTo(Patient::class, 'patient_id', 'id');

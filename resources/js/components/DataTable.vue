@@ -16,10 +16,10 @@
                     </td>
                     <td v-if="destination">
                         <div class="flex flex-wrap gap-2 p-4 text-xs">
-                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-blue-400 hover:bg-indigo-900 font-bold" :to="`/${destination}/view/${row.id_number}`">
+                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-blue-400 hover:bg-indigo-900 font-bold" :to="`/${destination}/view/${row.id}`">
                                 View
                             </router-link>
-                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-green-600 hover:bg-green-900 font-bold" :to="`/${destination}/edit/${row.id_number}`">
+                            <router-link class="block p-2 rounded w-full md:max-w-1/3 bg-green-600 hover:bg-green-900 font-bold" :to="`/${destination}/edit/${row.id}`">
                                 Edit
                             </router-link>
                             <button class="p-2 rounded w-full md:max-w-1/3 bg-red-400 hover:bg-red-900 font-bold" @click="confirmDelete(row.id_number)">
