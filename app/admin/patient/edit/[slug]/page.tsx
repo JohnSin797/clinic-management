@@ -1,7 +1,6 @@
 'use client'
 
 import axios from "axios";
-import { error } from "console";
 import Link from "next/link";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
 import { ToastContainer, toast } from "react-toastify";

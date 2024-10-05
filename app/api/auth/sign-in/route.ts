@@ -2,7 +2,6 @@ import connect from "@/lib/connect";
 import User from "@/app/models/User";
 import { NextResponse } from "next/server";
 import bcryptjs from "bcryptjs";
-import { Types } from "mongoose";
 import { createSigner } from "fast-jwt";
 
 export const POST = async (request: Request) => {
