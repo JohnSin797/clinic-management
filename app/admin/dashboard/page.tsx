@@ -65,9 +65,23 @@ interface PatientState {
     loading: boolean;
 }
 
+interface Appointment {
+    consultation_type: string;
+    schedule: Date;
+}
+
+interface AppointmentState {
+    appointments: Appointment[];
+    loading: boolean;
+}
+
 export default function Dashboard() {
     const [patients, setPatients] = useState<PatientState>({
         patients: [],
+        loading: true
+    })
+    const [appointments, setAppointments] = useState<AppointmentState>({
+        appointments: [],
         loading: true
     })
     const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
@@ -98,11 +112,23 @@ export default function Dashboard() {
         ],
     }
 
-    const appointments = [
-        new Date(2024, 9, 10), // Appointment on October 10, 2024
-        new Date(2024, 9, 15), // Appointment on October 15, 2024
-        new Date(2024, 9, 22), // Appointment on October 22, 2024
-    ];
+    const getAppointments = useCallback(async () => {
+        await axios.get('/api/schedule')
+        .then(response => {
+            const app = response.data.schedule
+            setAppointments({
+                appointments: app,
+                loading: false
+            })
+        })
+        .catch(error => {
+            console.log(error)
+            setAppointments({
+                ...appointments,
+                loading: false
+            })
+        })
+    }, [])
 
     const getPatients = useCallback(async () => {
         await axios.get('/api/patient')
@@ -120,7 +146,8 @@ export default function Dashboard() {
     
     useEffect(() => {
         getPatients();
-    }, [getPatients]);
+        getAppointments();
+    }, [getPatients, getAppointments]);
 
     return (
         <div className="w-full p-5 md:px-20">
@@ -150,7 +177,7 @@ export default function Dashboard() {
                 </section>
                 <section className="w-96 rounded-lg shadow-xl bg-[#ccc] p-5 flex justify-center items-center gap-4 h-60">
                     <Clock datediff={8} />
-                    <Calendar appointments={appointments} />
+                    <Calendar appointments={appointments.appointments} />
                 </section>
             </div>
             <section className="w-full bg-zinc-200 p-5">

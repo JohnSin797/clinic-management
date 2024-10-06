@@ -38,9 +38,12 @@ export const GET = async (request: Request) => {
         await connect();
         let schedule;
         if (!email) {
-            schedule = await Appointment.find({ deletedAt: null });
+            schedule = await Appointment.find({ deletedAt: null }).populate('patient').exec();
         } else {
-            const patient = await Patient.findOne({ email: email });
+            const patient = await Patient.findOne({ email: email }).exec();
+            if (!patient) {
+                return new NextResponse(JSON.stringify({ message: 'Patient not found' }), { status: 404 });
+            }
             schedule = await Appointment.find({ patient: patient._id });
         }
 

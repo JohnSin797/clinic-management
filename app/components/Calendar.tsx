@@ -12,8 +12,13 @@ import {
   isSameDay,
 } from 'date-fns';
 
+interface Appointment {
+    consultation_type: string;
+    schedule: Date;
+}
+
 interface CalendarProps {
-  appointments: Date[];
+  appointments: Appointment[];
 }
 
 const Calendar: React.FC<CalendarProps> = ({ appointments }) => {
@@ -71,7 +76,7 @@ const Calendar: React.FC<CalendarProps> = ({ appointments }) => {
       <div className="grid grid-cols-7 text-xs">
         {dates.map((day, index) => {
           const isAppointment = appointments.some((appointment) =>
-            isSameDay(appointment, day)
+            isSameDay(appointment.schedule, day)
           );
 
           return (
@@ -80,9 +85,9 @@ const Calendar: React.FC<CalendarProps> = ({ appointments }) => {
               className={`p-1 border border-gray-200 text-center ${
                 isAppointment
                   ? 'bg-green-100'
-                  : day.getMonth() === currentDate.getMonth()
+                  : (day.getMonth() === currentDate.getMonth()
                   ? 'bg-white'
-                  : 'bg-gray-100 text-gray-400'
+                  : 'bg-gray-100 text-gray-400')
               }`}
             >
               {format(day, dateFormat)}

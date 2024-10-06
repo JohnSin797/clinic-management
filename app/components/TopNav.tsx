@@ -1,11 +1,25 @@
 'use client'
 
-import { SignOut } from "../utils/SignOut"
+import axios from "axios"
+import { useRouter } from "next/navigation"
+import { FC } from "react";
 
-export default function TopNav() {
+interface TopNavProps {
+    isHidden?: boolean;
+}
+
+const TopNav: FC<TopNavProps> = ({ isHidden }) => {
+    const router = useRouter()
 
     const handleLogout = async () => {
-        await SignOut()
+        await axios.get('/api/auth/logout')
+        .then(response => {
+            console.log(response)
+            router.push('/')
+        })
+        .catch(error => {
+            console.log(error)
+        })
     }
 
     return (
@@ -13,7 +27,10 @@ export default function TopNav() {
             <header>
                 <h1 className="text-2xl text-white">Clinic Mangement</h1>
             </header>
-            <button onClick={handleLogout} type="button" className="">logout</button>
+            <button onClick={handleLogout} type="button" className="hidden md:block">logout</button>
+
         </div>
     )
 }
+
+export default TopNav

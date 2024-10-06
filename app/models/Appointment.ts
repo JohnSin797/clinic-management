@@ -1,8 +1,8 @@
 import { Schema, model, models } from "mongoose";
-// import Patient from "./Patient";
+import Patient from "./Patient"; // eslint-disable-line no-unused-vars
 
 interface IAppointment extends Document {
-    patient: string;
+    patient: Schema.Types.ObjectId;
     schedule: Date;
     consultation_type: string;
     deletedAt?: Date;
@@ -13,9 +13,9 @@ interface IAppointment extends Document {
 const appointmentSchema = new Schema<IAppointment>(
     {
         patient: {
-            type: String,
-            required: true,
+            type: Schema.Types.ObjectId,
             ref: 'Patient',
+            required: true,
         },
         schedule: {
             type: Date,

@@ -17,7 +17,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         async redirect({ url, baseUrl }) {
             if (url.startsWith('/user')) {
                 return baseUrl
-            }
+            } 
             return baseUrl + '/user/dashboard'
         },
     }
