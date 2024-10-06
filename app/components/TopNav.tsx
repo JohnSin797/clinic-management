@@ -5,10 +5,10 @@ import { useRouter } from "next/navigation"
 import { FC } from "react";
 
 interface TopNavProps {
-    isHidden?: boolean;
+    toggleMenu: ()=>void;
 }
 
-const TopNav: FC<TopNavProps> = ({ isHidden }) => {
+const TopNav: FC<TopNavProps> = ({ toggleMenu }) => {
     const router = useRouter()
 
     const handleLogout = async () => {
@@ -28,7 +28,11 @@ const TopNav: FC<TopNavProps> = ({ isHidden }) => {
                 <h1 className="text-2xl text-white">Clinic Mangement</h1>
             </header>
             <button onClick={handleLogout} type="button" className="hidden md:block">logout</button>
-
+            <button onClick={()=>toggleMenu()} className="md:hidden">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                </svg>
+            </button>
         </div>
     )
 }

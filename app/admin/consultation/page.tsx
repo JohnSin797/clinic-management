@@ -1,7 +1,6 @@
 'use client'
 
 import PatientFinder from "@/app/components/PatientFinder";
-import Link from "next/link";
 import { useState } from "react";
 
 export default function Consultation() {

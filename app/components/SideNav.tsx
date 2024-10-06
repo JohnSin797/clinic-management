@@ -18,7 +18,7 @@ const SideNav: FC<SideNavProps> = ({ isHidden }) => {
     }
 
     return (
-        <div className={`fixed left-0 top-0 w-full md:w-1/6 bg-red-900 z-10 min-h-screen ${isHidden ? 'hidden md:block' : ''}`}>
+        <div className={`fixed left-0 top-0 w-full md:w-1/6 bg-red-900 pt-10 z-10 min-h-screen ${isHidden ? 'hidden md:block' : ''}`}>
             <div className="flex justify-center items-center w-full my-5">
                 <Image src={logo} alt="logo" width={100} height={100} />
             </div>

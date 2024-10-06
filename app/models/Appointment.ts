@@ -1,5 +1,5 @@
 import { Schema, model, models } from "mongoose";
-import Patient from "./Patient"; // eslint-disable-line no-unused-vars
+import Patient from "./Patient"; // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
 interface IAppointment extends Document {
     patient: Schema.Types.ObjectId;

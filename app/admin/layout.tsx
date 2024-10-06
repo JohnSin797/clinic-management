@@ -11,10 +11,14 @@ interface LayoutProps {
 const CustomLayout: React.FC<LayoutProps> = ({ children }) => {
     const [hideNavs, setHideNavs] = useState<boolean>(true)
 
+    const toggleMenu = () => {
+      setHideNavs(!hideNavs)
+    }
+
     return (
       <div>
         <SideNav isHidden={hideNavs} />
-        <TopNav />
+        <TopNav toggleMenu={toggleMenu} />
         <main className="absolute w-full md:w-5/6 top-14 right-0 z-8">
             {children}
         </main>
