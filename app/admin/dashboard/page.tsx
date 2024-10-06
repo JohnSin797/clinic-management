@@ -23,35 +23,34 @@ ChartJS.register(
     Legend
 )
 
-const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
-
-export const options = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top' as const,
-        },
-        title: {
-            display: true,
-            text: 'Clinic Consultations',
-        },
-    },
-}
-
-const dataArr = [0, 1, 10, 2, 13, 15, 3, 1, 0, 0, 0, 0]
-
-const data: ChartData<"bar", number[], string> = {
-    labels,
-    datasets: [
-      {
-        label: "Number of consultations",
-        data: dataArr, 
-        backgroundColor: "rgba(69, 10, 10, 0.8)", 
-      },
-    ],
-  }
-
 export default function Dashboard() {
+    const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
+
+    const options = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top' as const,
+            },
+            title: {
+                display: true,
+                text: 'Clinic Consultations',
+            },
+        },
+    }
+
+    const dataArr = [0, 1, 10, 2, 13, 15, 3, 1, 0, 0, 0, 0]
+
+    const data: ChartData<"bar", number[], string> = {
+        labels,
+        datasets: [
+        {
+            label: "Number of consultations",
+            data: dataArr, 
+            backgroundColor: "rgba(69, 10, 10, 0.8)", 
+        },
+        ],
+    }
 
     const appointments = [
         new Date(2024, 9, 10), // Appointment on October 10, 2024
