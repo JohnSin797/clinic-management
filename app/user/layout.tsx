@@ -1,15 +1,9 @@
 import React, { ReactNode } from "react";
 import UserNav from "../components/UserNav";
-import { SessionProvider, useSession } from "next-auth/react";
+import { SessionProvider } from "next-auth/react";
 
 interface LayoutProps {
     children: ReactNode;
-}
-
-interface User {
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
 }
 
 const CustomLayout: React.FC<LayoutProps> = ({ children }) => {
