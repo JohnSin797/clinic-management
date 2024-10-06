@@ -2,13 +2,21 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation"
+import { SignOut } from "../utils/SignOut";
+import { useRouter } from "next/navigation";
 
 export default function UserNav() {
     
     const pathname = usePathname()
+    const router = useRouter()
 
     const isActiveLink = (link: string) => {
         return pathname.startsWith(link)
+    }
+
+    const logout = async () => {
+        await SignOut()
+        router.push('/')
     }
 
     return (
@@ -19,7 +27,7 @@ export default function UserNav() {
                 <Link href={'/user/schedule'} className={`${isActiveLink('/user/schedule') ? 'text-white' : ''}`}>Schedule</Link>
             </div>
             <div className="">
-                <button className="text-gray-200 hover:text-white">logout</button>
+                <button onClick={logout} className="text-gray-200 hover:text-white">logout</button>
             </div>
         </div>
     )

@@ -10,16 +10,15 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             profile(profile) {
                 return { role: profile.role ?? "user", ...profile }
             },
-            
+            allowDangerousEmailAccountLinking: true,
         }),
     ],
     callbacks: {
         async redirect({ url, baseUrl }) {
-          // Allows relative callback URLs
-          if (url.startsWith("/")) return `${baseUrl}${url}`
-          // Allows callback URLs on the same origin
-          else if (new URL(url).origin === baseUrl) return url
-          return baseUrl
-        }
+            if (url.startsWith('/user')) {
+                return baseUrl
+            }
+            return baseUrl + '/user/dashboard'
+        },
     }
 })

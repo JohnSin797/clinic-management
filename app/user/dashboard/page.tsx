@@ -6,6 +6,6 @@ export default function Dashboard() {
     const session = useSession()
 
     return (
-        <div>{session.data?.user?.email}</div>
+        <div className="w-full pt-20">{session.data?.user?.email}</div>
     )
 }

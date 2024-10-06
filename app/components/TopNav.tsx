@@ -1,19 +1,11 @@
 'use client'
 
-import { useRouter } from "next/navigation"
-import axios from "axios"
+import { SignOut } from "../utils/SignOut"
 
 export default function TopNav() {
-    const router = useRouter()
 
     const handleLogout = async () => {
-        await axios.get('/api/auth/logout')
-        .then(()=>{
-            router.push('/')
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        await SignOut()
     }
 
     return (

@@ -41,7 +41,7 @@ interface Patient {
 }
 
 interface PatientProps {
-    email_address?: string,
+    email_address?: string | null,
 }
 
 const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
@@ -59,7 +59,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
         religion: '',
         sex: 'male',
         contact: '',
-        email: '',
+        email: email_address ?? '',
         address: '',
         father_name: '',
         father_birthdate: null, 

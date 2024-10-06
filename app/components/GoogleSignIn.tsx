@@ -2,12 +2,15 @@
 
 import { FormEvent } from "react"
 import { SignInWithGoogle } from "../utils/GoogleSignIn"
+import { useRouter } from "next/navigation"
 
 export default function GoogleSignIn() {
+    const router = useRouter()
     
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         await SignInWithGoogle()
+        // router.push('/user/dashboard')
     }
     
     return (
