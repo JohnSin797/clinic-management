@@ -1,11 +1,29 @@
 'use client'
 
 import PatientFinder from "@/app/components/PatientFinder";
-import { useState } from "react";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+
+interface Patient {
+    _id: string;
+    first_name: string;
+    middle_name: string;
+    last_name: string;
+    extension: string;
+    department: string;
+    position: string;
+}
+
+interface Consultation {
+    _id: string;
+    patient: Patient;
+    createdAt: Date;
+}
 
 export default function Consultation() {
     const [isHidden, setIsHidden] = useState<boolean>(true)
     const [goTo, setGoTo] = useState<string>('')
+    const [consultations, setConsultations] = useState<Consultation[]>([])
 
     const togglePatientFinder = () => {
         setIsHidden(!isHidden)
@@ -15,6 +33,21 @@ export default function Consultation() {
         setGoTo(link)
         togglePatientFinder()
     }
+
+    const getConsultations = useCallback(async () => {
+        await axios.get('/api/consultation')
+        .then(response => {
+            const con = response.data?.consultation
+            setConsultations(con)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }, [])
+
+    useEffect(() => {
+        getConsultations()
+    }, [getConsultations])
 
     return (
         <div className="w-full flex justify-center items-center">
@@ -38,6 +71,20 @@ export default function Consultation() {
                                 <th>Date</th>
                             </tr>
                         </thead>
+                        <tbody>
+                            {
+                                consultations.map((item, index) => {
+                                    return (
+                                        <tr key={index}>
+                                            <td>{item?.patient?.first_name} {item?.patient?.middle_name} {item?.patient?.last_name} {item?.patient?.extension}</td>
+                                            <td>{item?.patient?.position}</td>
+                                            <td></td>
+                                            <td>{new Date(item?.createdAt).toLocaleDateString('en-US')}</td>
+                                        </tr>
+                                    )
+                                })
+                            }
+                        </tbody>
                     </table>
                 </div>
             </section>

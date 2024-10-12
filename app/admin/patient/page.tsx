@@ -123,6 +123,7 @@ export default function Patient() {
                                 <th>Name</th>
                                 <th>Position</th>
                                 <th>Department</th>
+                                <th>ID Number</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -134,6 +135,7 @@ export default function Patient() {
                                             <td className="p-2 border-b border-gray-200">{ item.first_name } { item.middle_name } { item.last_name } { item.extension }</td>
                                             <td className="p-2 border-b border-gray-200">{ item.position }</td>
                                             <td className="p-2 border-b border-gray-200">{ item.department }</td>
+                                            <td className="p-2 border-b border-gray-200">{ item.id_number }</td>
                                             <td>
                                                 <div className="p-2 border-b border-gray-200 flex flex-wrap justify-center items-center gap-2">
                                                     <Link href={`/admin/patient/view/${item.id_number}`} className="p-2 rounded text-white text-xs font-semibold bg-green-600 hover:bg-green-700">View</Link>

@@ -43,3 +43,12 @@
       }
     }
   }
+
+/* .with-line {
+  color: white;
+}
+
+.with-line::before, .with-line::after {
+  content:"\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0\00a0";
+  text-decoration: line-through;
+} */

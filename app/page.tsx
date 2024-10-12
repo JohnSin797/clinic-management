@@ -72,7 +72,11 @@ export default function Home() {
           </form>
         </div>
         <div className="w-full p-5">
-          <p className="with-line text-center mb-5">or:</p>
+          <div className="flex items-center mb-5">
+            <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+            <div className="flex-grow-0 mx-5 text dark:text-white">or</div>
+            <div className="flex-grow bg bg-gray-300 h-0.5"></div>
+          </div>
           <div className="space-y-2">
             <GoogleSignIn />
           </div>
