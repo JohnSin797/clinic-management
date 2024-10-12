@@ -1,5 +1,4 @@
 import connect from "@/lib/connect";
-import Patient from "@/app/models/Patient";
 import Consultation from "@/app/models/Consultation";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";

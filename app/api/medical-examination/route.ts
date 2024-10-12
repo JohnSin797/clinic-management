@@ -1,6 +1,5 @@
 import connect from "@/lib/connect";
 import MedicalExamination from "@/app/models/MedicalExamination";
-import Patient from "@/app/models/Patient";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
@@ -57,7 +56,8 @@ export const PATCH = async (request: Request) => {
             return new NextResponse(JSON.stringify({message: 'Failed to delete medical examination form'}), {status: 400});
         }
 
-        const medex = await MedicalExamination.find({ deletedAt: null })
+        const medex = await MedicalExamination.find({ deletedAt: null }).populate('patient');
+        return new NextResponse(JSON.stringify({message: 'OK', medex: medex}), {status: 200});
     } catch (error: unknown) {
         let message = '';
         if (error instanceof Error) {
