@@ -629,10 +629,6 @@ export default function Consultation({ params }: { params: { slug: string }}) {
                                                 name="illness_history"
                                                 options={illnessOptions}
                                                 value={illnessHistory}
-                                                // onChange={(e: MultiValue<IllnessOption>)=>setConsultation({
-                                                //     ...consultation,
-                                                //     illness_history: [...e]
-                                                // })}
                                                 onChange={(e: MultiValue<IllnessOption>) => setIllnessHistory([...e])}
                                             />
                                         </div>
