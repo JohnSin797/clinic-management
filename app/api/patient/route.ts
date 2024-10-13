@@ -81,7 +81,11 @@ export const PATCH = async (request: Request) => {
         const patientId = searchParams.get('patient_id');
         await connect();
 
-        if (!Types.ObjectId.isValid) {
+        if (!patientId) {
+            return new NextResponse(JSON.stringify({message: 'Missing patient id'}), {status: 400});
+        }
+
+        if (!Types.ObjectId.isValid(patientId)) {
             return new NextResponse(JSON.stringify({message: 'Invalid patient id'}), {status: 400});
         }
 

@@ -17,6 +17,7 @@ interface Patient {
 interface Consultation {
     _id: string;
     patient: Patient;
+    consultation_type: string;
     createdAt: Date;
 }
 
@@ -37,7 +38,7 @@ export default function Consultation() {
     const getConsultations = useCallback(async () => {
         await axios.get('/api/consultation')
         .then(response => {
-            const con = response.data?.consultation
+            const con = response.data?.logs
             setConsultations(con)
         })
         .catch(error => {
@@ -78,8 +79,8 @@ export default function Consultation() {
                                         <tr key={index}>
                                             <td>{item?.patient?.first_name} {item?.patient?.middle_name} {item?.patient?.last_name} {item?.patient?.extension}</td>
                                             <td>{item?.patient?.position}</td>
-                                            <td></td>
-                                            <td>{new Date(item?.createdAt).toLocaleDateString('en-US')}</td>
+                                            <td>{item?.consultation_type}</td>
+                                            <td>{new Date(item?.createdAt).toLocaleDateString('en-PH')}</td>
                                         </tr>
                                     )
                                 })

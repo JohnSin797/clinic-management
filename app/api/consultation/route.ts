@@ -1,5 +1,6 @@
 import connect from "@/lib/connect";
 import Consultation from "@/app/models/Consultation";
+import PatientLog from "@/app/models/PatientLog";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
@@ -7,7 +8,8 @@ export const GET = async () => {
     try {
         await connect();
         const consultations = await Consultation.find({ deletedAt: null }).populate('patient');
-        return new NextResponse(JSON.stringify({message: 'OK', consultation: consultations}), {status: 200});
+        const logs = await PatientLog.find({ deletedAt: null }).populate('patient');
+        return new NextResponse(JSON.stringify({message: 'OK', consultation: consultations, logs: logs}), {status: 200});
     } catch (error: unknown) {
         let message = '';
         if (error instanceof Error) {
@@ -32,7 +34,12 @@ export const POST = async (request: Request) => {
         if (!consultation) {
             return new NextResponse(JSON.stringify({message: 'Failed to create consultation form'}), {status: 400});
         }
-
+        await PatientLog.create({
+            patient: new Types.ObjectId(body.patient),
+            consultation_type: 'consultation',
+            complaint: consultation.current_illness,
+            findings: consultation.current_illness
+        });
         return new NextResponse(JSON.stringify({message: 'OK'}), {status: 200});
     } catch (error: unknown) {
         let message = '';
