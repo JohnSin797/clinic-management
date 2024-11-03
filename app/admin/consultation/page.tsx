@@ -21,10 +21,17 @@ interface Consultation {
     createdAt: Date;
 }
 
+interface MedexState {
+    consultation: Consultation;
+    consultation_type: string;
+    findings: string;
+    createdAt: Date;
+}
+
 export default function Consultation() {
     const [isHidden, setIsHidden] = useState<boolean>(true)
     const [goTo, setGoTo] = useState<string>('')
-    const [consultations, setConsultations] = useState<Consultation[]>([])
+    const [consultations, setConsultations] = useState<MedexState[]>([])
 
     const togglePatientFinder = () => {
         setIsHidden(!isHidden)
@@ -36,9 +43,10 @@ export default function Consultation() {
     }
 
     const getConsultations = useCallback(async () => {
-        await axios.get('/api/consultation')
+        await axios.get('/api/medical-record')
         .then(response => {
-            const con = response.data?.logs
+            console.log(response)
+            const con = response.data?.medex
             setConsultations(con)
         })
         .catch(error => {
@@ -77,8 +85,11 @@ export default function Consultation() {
                                 consultations.map((item, index) => {
                                     return (
                                         <tr key={index}>
-                                            <td>{item?.patient?.first_name} {item?.patient?.middle_name} {item?.patient?.last_name} {item?.patient?.extension}</td>
-                                            <td>{item?.patient?.position}</td>
+                                            <td>
+                                                {item?.consultation?.patient?.first_name} {item?.consultation?.patient?.middle_name} {item?.consultation?.patient?.last_name} {item?.consultation?.patient?.extension}
+
+                                            </td>
+                                            <td>{item?.consultation?.patient?.position}</td>
                                             <td>{item?.consultation_type}</td>
                                             <td>{new Date(item?.createdAt).toLocaleDateString('en-PH')}</td>
                                         </tr>

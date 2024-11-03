@@ -487,7 +487,7 @@ export default function Consultation({ params }: { params: { slug: string }}) {
                                         className="w-full p-2 rounded text-sm" 
                                         placeholder="Father's Occupation"
                                         value={patient.father_occupation}
-                                        readOnly
+                                        onChange={handleOnChange}
                                     />
                                 </div>
                             </div>
@@ -776,6 +776,7 @@ export default function Consultation({ params }: { params: { slug: string }}) {
                                                 ...consultation,
                                                 current_illness: e.target.value
                                             })}
+                                            required
                                         />
                                     </div>
                                     <div className="w-full flex justify-center items-center gap-2">

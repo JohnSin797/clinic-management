@@ -4,6 +4,8 @@ import Consultation from "./Consultation";
 
 interface IMedicalRecord extends Document {
     consultation: Schema.Types.ObjectId;
+    medical_examination: Schema.Types.ObjectId;
+    dental_consultation: Schema.Types.ObjectId;
     consultation_type: string;
     findings: string;
     deletedAt?: Date;
@@ -16,7 +18,17 @@ const medicalRecordSchema = new Schema<IMedicalRecord>(
         consultation: {
             type: Schema.Types.ObjectId,
             ref: 'Consultation',
-            required: true,
+            required: false,
+        },
+        medical_examination: {
+            type: Schema.Types.ObjectId,
+            ref: 'MedicalExamination',
+            required: false,
+        },
+        dental_consultation: {
+            type: Schema.Types.ObjectId,
+            ref: 'DentalConsultation',
+            required: false,
         },
         consultation_type: {
             type: String,

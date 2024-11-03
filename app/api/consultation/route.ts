@@ -1,6 +1,7 @@
 import connect from "@/lib/connect";
 import Consultation from "@/app/models/Consultation";
 import PatientLog from "@/app/models/PatientLog";
+import MedicalRecord from "@/app/models/MedicalRecord";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
@@ -39,6 +40,11 @@ export const POST = async (request: Request) => {
             consultation_type: 'consultation',
             complaint: consultation.current_illness,
             findings: consultation.current_illness
+        });
+        await MedicalRecord.create({
+            consultation: consultation._id,
+            consultation_type: 'consultation',
+            findings: consultation?.current_illness,
         });
         return new NextResponse(JSON.stringify({message: 'OK'}), {status: 200});
     } catch (error: unknown) {
