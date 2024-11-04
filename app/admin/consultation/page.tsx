@@ -1,8 +1,10 @@
 'use client'
 
 import PatientFinder from "@/app/components/PatientFinder";
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
 
 interface Patient {
     _id: string;
@@ -58,6 +60,33 @@ export default function Consultation() {
         getConsultations()
     }, [getConsultations])
 
+    const consultationExport = async () => {
+        toast.promise(
+            axios.post('/api/consultation/export'),
+            {
+                pending: 'Exporting file...',
+                success: {
+                    render({ data }) {
+                        const url = window.URL.createObjectURL(new Blob([data.data]))
+                        const link = document.createElement('a')
+                        link.href = url
+                        link.setAttribute('download', 'Generated_Document.docx')
+                        document.body.appendChild(link)
+                        link.click()
+                        link.remove()
+                        window.URL.revokeObjectURL(url)
+                        return 'Download done'
+                    }
+                },
+                error: {
+                    render({ data }: { data: AxiosResponse }) {
+                        return data?.data?.message
+                    }
+                }
+            }
+        )
+    }
+
     return (
         <div className="w-full flex justify-center items-center">
             <PatientFinder isHidden={isHidden} goTo={goTo} toggle={togglePatientFinder} />
@@ -78,6 +107,7 @@ export default function Consultation() {
                                 <th>Position</th>
                                 <th>Type</th>
                                 <th>Date</th>
+                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -92,6 +122,11 @@ export default function Consultation() {
                                             <td>{item?.consultation?.patient?.position}</td>
                                             <td>{item?.consultation_type}</td>
                                             <td>{new Date(item?.createdAt).toLocaleDateString('en-PH')}</td>
+                                            <td>
+                                                <div className="w-full flex flex-wrap justify-center items-center gap-2">
+                                                    <button onClick={consultationExport} className="p-2 text-sm text-white font-bold bg-blue-400 hover:bg-blue-600 rounded">export</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     )
                                 })
