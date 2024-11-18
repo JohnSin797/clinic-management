@@ -182,6 +182,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="First name"
                                 value={patient.first_name}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -194,6 +195,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Middle name"
                                 value={patient.middle_name}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -206,6 +208,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Last name"
                                 value={patient.last_name}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -230,6 +233,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 className="w-full p-2 rounded text-sm"
                                 value={patient.position}
                                 onChange={handleOnChange}
+                                required
                             >
                                 <option value="">Select Position</option>
                                 <option value="student">Student</option>
@@ -247,6 +251,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Department"
                                 value={patient.department}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -259,6 +264,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="ID Number"
                                 value={patient.id_number}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                     </div>
@@ -272,6 +278,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 className="w-full p-2 rounded text-sm" 
                                 value={patient.birthdate ? new Date(patient.birthdate).toISOString().substring(0, 10) : ''}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -284,6 +291,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Nationality"
                                 value={patient.nationality}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                         <div className="w-full">
@@ -296,6 +304,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Religion"
                                 value={patient.religion}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                     </div>
@@ -312,6 +321,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                         onChange={() =>
                                             setPatient({ ...patient, sex: patient.sex === 'male' ? 'female' : 'male' })
                                         } 
+                                        required
                                     />
                                     <label htmlFor="male" className="text-xs">Male</label>
                                 </div>
@@ -324,6 +334,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                         onChange={() =>
                                             setPatient({ ...patient, sex: patient.sex === 'female' ? 'male' : 'female' })
                                         } 
+                                        required
                                     />
                                     <label htmlFor="female" className="text-xs">Female</label>
                                 </div>
@@ -351,6 +362,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                 placeholder="Email"
                                 value={patient.email}
                                 onChange={handleOnChange}
+                                required
                             />
                         </div>
                     </div>
@@ -364,6 +376,7 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                             placeholder="Address"
                             value={patient.address}
                             onChange={handleOnChange}
+                            required
                         />
                     </div>
                     <div className="w-full flex flex-col md:flex-row justify-center items-center gap-2">

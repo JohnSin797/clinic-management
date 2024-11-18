@@ -5,9 +5,18 @@ import MedicalRecord from "@/app/models/MedicalRecord";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
-export const GET = async () => {
+export const GET = async (request: Request) => {
     try {
+        const { searchParams } = new URL(request.url);
+        const consultationId = searchParams.get('consultation_id');
         await connect();
+        if (consultationId) {
+            if (!Types.ObjectId.isValid(consultationId)) {
+                return new NextResponse(JSON.stringify({message: 'Invalid consultation id'}), {status: 400});
+            }
+            const consultation = await Consultation.findOne({ _id: consultationId }).populate('patient');
+            return new NextResponse(JSON.stringify({message: 'OK', consultation: consultation}), {status: 200});
+        }
         const consultations = await Consultation.find({ deletedAt: null }).populate('patient');
         const logs = await PatientLog.find({ deletedAt: null }).populate('patient');
         return new NextResponse(JSON.stringify({message: 'OK', consultation: consultations, logs: logs}), {status: 200});

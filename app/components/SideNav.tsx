@@ -3,18 +3,28 @@
 import Image from "next/image"
 import logo from "@/assets/images/sorsu-logo.png"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
-import { FC } from "react"
+import { usePathname, useRouter } from "next/navigation"
+import { FC, useState } from "react"
+import { FaTeeth, FaCommentMedical } from "react-icons/fa";
+import { LiaStethoscopeSolid } from "react-icons/lia";
 
 interface SideNavProps {
-    isHidden?: boolean
+    isHidden?: boolean;
+    toggleMenu: ()=>void;
+    finderFunction: (link:string)=>void;
 }
 
-const SideNav: FC<SideNavProps> = ({ isHidden }) => {
+const SideNav: FC<SideNavProps> = ({ isHidden, toggleMenu, finderFunction }) => {
     const pathname = usePathname()
+    const router = useRouter()
 
     const isActiveLink = (link: string) => {
         return pathname.startsWith(link)
+    }
+
+    const redirectTo = (link: string) => {
+        toggleMenu()
+        router.push(link)
     }
 
     return (
@@ -22,7 +32,7 @@ const SideNav: FC<SideNavProps> = ({ isHidden }) => {
             <div className="flex justify-center items-center w-full my-5">
                 <Image src={logo} alt="logo" width={100} height={100} />
             </div>
-            <ul className="space-y-5 text-white text-sm text-center">
+            <ul className="space-y-5 text-white text-sm text-center overflow-y-auto h-96">
                 <li>
                     <Link 
                         href={'/admin/dashboard'} 
@@ -57,15 +67,38 @@ const SideNav: FC<SideNavProps> = ({ isHidden }) => {
                     </Link>
                 </li>
                 <li>
-                    <Link 
-                        href={'/admin/consultation'} 
+                    <button 
+                        onClick={()=>redirectTo('/admin/consultation')}
                         className={`block p-2 w-full flex justify-start items-center gap-2 ${isActiveLink('/admin/consultation') ? 'bg-red-950' : ''}`}
                     >
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 10.5v6m3-3H9m4.06-7.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z" />
                         </svg>
                         Consultation
-                    </Link>
+                    </button>
+                    <div className={`w-full p-3 space-y-2 ${isActiveLink('/admin/consultation') ? '' : 'hidden'}`}>
+                        <button 
+                            onClick={()=>finderFunction('/admin/consultation/consultation')} 
+                            className={`p-2 w-full flex justify-start items-center gap-2 ${isActiveLink('/admin/consultation/consultation') && 'bg-red-950'}`}
+                        >
+                            <FaCommentMedical className="text-xl" />
+                            Consultation
+                        </button>
+                        <button 
+                            onClick={()=>finderFunction('/admin/consultation/medical-examination')} 
+                            className={`p-2 w-full flex justify-start items-center gap-2 ${isActiveLink('/admin/consultation/medical-examination') && 'bg-red-950'}`}
+                        >
+                            <LiaStethoscopeSolid className="text-xl" />
+                            Medical Examination
+                        </button>
+                        <button 
+                            onClick={()=>finderFunction('/admin/consultation/dental-consultation')} 
+                            className={`p-2 w-full flex justify-start items-center gap-2 ${isActiveLink('/admin/consultation/dental-consultation') && 'bg-red-950'}`}
+                        >
+                            <FaTeeth className="text-xl" />
+                            Dental Consultation
+                        </button>
+                    </div>
                 </li>
                 <li>
                     <Link 
