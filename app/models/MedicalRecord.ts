@@ -7,7 +7,7 @@ interface IMedicalRecord extends Document {
     medical_examination: Schema.Types.ObjectId;
     dental_consultation: Schema.Types.ObjectId;
     consultation_type: string;
-    findings: string;
+    findings: string[];
     deletedAt?: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -35,7 +35,7 @@ const medicalRecordSchema = new Schema<IMedicalRecord>(
             required: true,
         },
         findings: {
-            type: String,
+            type: [String],
             required: true,
         },
         deletedAt: Date,

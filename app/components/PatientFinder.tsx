@@ -1,10 +1,11 @@
 'use client'
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { FC, FormEvent, useState } from "react"
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from "sweetalert2";
 
 interface PatientFinderProps {
     isHidden: boolean;
@@ -18,16 +19,31 @@ const PatientFinder: FC<PatientFinderProps> = ({ isHidden, goTo, toggle }) => {
 
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
-        await axios.get(`/api/patient?id_number=${idNumber}`)
-        .then(response => {
-            toast.success('Patient found')
-            const p = response.data?.patient
-            router.push(goTo + '/' + p?.id_number)
-        })
-        .catch(error => {
-            console.log(error)
-            toast.error(error.response?.data?.message)
-        })
+        toast.promise(
+            axios.get(`/api/patient?id_number=${idNumber}`),
+            {
+                pending: 'Finding patient...',
+                success: {
+                    render({ data }: { data: AxiosResponse }) {
+                        const p = data.data?.patient
+                        router.push(goTo + '/' + p?.id_number)
+                        toggle()
+                        return 'Patient found'
+                    }
+                },
+                error: {
+                    render({ data }: {data: AxiosResponse}) {
+                        console.log(data)
+                        Swal.fire({
+                            title: 'Error',
+                            text: data.data?.message,
+                            icon: 'error'
+                        })
+                        return 'Error'
+                    }
+                }
+            }
+        )
     }
 
     return (

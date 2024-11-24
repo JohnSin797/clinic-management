@@ -24,7 +24,7 @@ interface IConsultation extends Document {
     asthma_history?: boolean;
     illness_history: string[];
     person_with_disability: string[];
-    current_illness?: string;
+    current_illness?: string[];
     surgical_operation: boolean;
     operation_date?: Date;
     operation_type?: string;
@@ -91,7 +91,7 @@ const consultationSchema = new Schema<IConsultation>(
             required: true,
             default: [''],
         },
-        current_illness: String,
+        current_illness: [String],
         surgical_operation: {
             type: Boolean,
             default: false

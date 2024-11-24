@@ -5,8 +5,8 @@ import Patient from "./Patient";
 interface IPatientLog extends Document {
     patient: Schema.Types.ObjectId;
     consultation_type: string;
-    complaint: string;
-    findings: string;
+    complaint: string[];
+    findings: string[];
     deletedAt: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -24,10 +24,10 @@ const patientLogSchema = new Schema<IPatientLog>(
             required: true,
         },
         complaint: {
-            type: String,
+            type: [String],
             required: true,
         },
-        findings: String,
+        findings: [String],
         deletedAt: Date,
     },
     {

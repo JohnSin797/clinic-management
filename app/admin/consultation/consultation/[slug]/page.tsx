@@ -1,9 +1,12 @@
 'use client'
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 import Select, { MultiValue } from "react-select";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
+import { ToastContainer, toast } from "react-toastify";
+import 'react-toastify/dist/ReactToastify.css';
+import Swal from "sweetalert2";
 
 interface IllnessOption {
     value: string;
@@ -67,7 +70,7 @@ interface ConsultationState {
     asthma_history?: boolean | null;
     illness_history: string[];
     person_with_disability: string[];
-    current_illness?: string;
+    current_illness?: string[];
     surgical_operation: boolean | null;
     operation_date?: Date;
     operation_type?: string;
@@ -79,7 +82,7 @@ interface ConsultationState {
 }
 
 export default function Consultation({ params }: { params: { slug: string }}) {
-    const router = useRouter()
+    // const router = useRouter()
     const [patient, setPatient] = useState<Patient>({
         _id: '',
         first_name: '',
@@ -136,7 +139,7 @@ export default function Consultation({ params }: { params: { slug: string }}) {
         asthma_history: null,
         illness_history: [],
         person_with_disability: [],
-        current_illness: '',
+        current_illness: [],
         surgical_operation: null,
         operation_date: new Date(),
         operation_type: '',
@@ -147,7 +150,9 @@ export default function Consultation({ params }: { params: { slug: string }}) {
         diagnosis: '',
     })
     const [illnessHistory, setIllnessHistory] = useState<IllnessOption[]>([])
+    const [selectedIllness, setSelectedIllness] = useState<IllnessOption[]>([])
     const [pwd, setPWD] = useState<IllnessOption[]>([])
+    const [isMounted, setIsMounted] = useState<boolean>(false)
 
 
     const getPatient = useCallback(async () => {
@@ -183,6 +188,7 @@ export default function Consultation({ params }: { params: { slug: string }}) {
     }, [])
 
     useEffect(() => {
+        setIsMounted(true)
         getPatient()
     }, [getPatient])
 
@@ -250,24 +256,56 @@ export default function Consultation({ params }: { params: { slug: string }}) {
         { value: 'communication disorder', label: 'Communication Disorder, Speech & Language Impairment (cleft lip/palate)' },
     ]
 
+    const currentIllnessOptions: IllnessOption[] = [
+        { value: 'headache', label: 'Headache' },
+        { value: 'cough', label: 'Cough' },
+        { value: 'cold', label: 'Cold' },
+        { value: 'flu', label: 'Flu' },
+        { value: 'allergies', label: 'Allergies' },
+        { value: 'stomach ache', label: 'Stomach ache' },
+        { value: 'uti', label: 'UTI' },
+        { value: 'tootache', label: 'Tootache' },
+        { value: 'injury', label: 'Injury' },
+        { value: 'infected wounds', label: 'Infected Wounds' },
+        { value: 'tuberculosis', label: 'Tuberculosis' },
+        { value: 'menstrual cramps', label: 'Menstrual Cramps' },
+    ]
+
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         const updatedConsultation: ConsultationState = {
             ...consultation,
             illness_history: illnessHistory.map((illness) => illness.value),
             person_with_disability: pwd.map((disability) => disability.value),
+            current_illness: selectedIllness.map((ill) => ill.value),
         }
-        await axios.post('/api/consultation', updatedConsultation)
-        .then(() => {
-            router.push('/admin/consultation')
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        toast.promise(
+            axios.post('/api/consultation', updatedConsultation),
+            {
+                pending: 'Submitting form...',
+                success: 'Form submitted',
+                error: {
+                    render({ data }: { data: AxiosResponse }) {
+                        Swal.fire({
+                            title: 'Error',
+                            text: data?.data?.message,
+                            icon: 'error'
+                        })
+                        return 'Error'
+                    }
+                }
+
+            }
+        )
+    }
+
+    if (!isMounted) {
+        return null
     }
 
     return (
         <div className="w-full flex justify-center items-center py-10">
+            <ToastContainer position="bottom-right" />
             <section className="w-full md:w-2/3 rounded-lg shadow-xl p-5 bg-zinc-400">
                 <header className="mb-5 font-semibold flex justify-between items-center">
                     <h1 className="text-2xl">Consultations</h1>
@@ -765,7 +803,7 @@ export default function Consultation({ params }: { params: { slug: string }}) {
                                 <div className="w-full flex flex-col justify-center items-center gap-2">
                                     <div className="w-full">
                                         <label htmlFor="current_illness" className="text-xs font-semibold">Are you suffering from an illness at the moment? Which do you think?</label>
-                                        <textarea 
+                                        {/* <textarea 
                                             name="current_illness"
                                             id="current_illness"
                                             className="w-full text-sm p-2 rounded resize-none" 
@@ -777,6 +815,12 @@ export default function Consultation({ params }: { params: { slug: string }}) {
                                                 current_illness: e.target.value
                                             })}
                                             required
+                                        /> */}
+                                        <Select 
+                                            options={currentIllnessOptions}
+                                            value={selectedIllness}
+                                            onChange={(e: MultiValue<IllnessOption>)=>setSelectedIllness([...e])}
+                                            isMulti
                                         />
                                     </div>
                                     <div className="w-full flex justify-center items-center gap-2">

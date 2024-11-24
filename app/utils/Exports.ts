@@ -1,5 +1,5 @@
 import { saveAs } from 'file-saver'
-import { Document, Packer, PageOrientation, Table, TableRow, TableCell, HeightRule, Paragraph, TextRun, AlignmentType, WidthType, ImageRun, ITextWrapping } from 'docx'
+import { Document, Packer, PageOrientation, Table, TableRow, TableCell, HeightRule, Paragraph, TextRun, AlignmentType, WidthType, ImageRun, ITextWrapping, Tab, BorderStyle, TableLayout } from 'docx'
 import formLogo from '@/assets/images/form-logo.png'
 import axios from 'axios'
 import { useCallback, useEffect, useState } from 'react'
@@ -62,7 +62,7 @@ interface ConsultationState {
     asthma_history?: boolean | null;
     illness_history: string[];
     person_with_disability: string[];
-    current_illness?: string;
+    current_illness?: string[];
     surgical_operation: boolean | null;
     operation_date?: Date;
     operation_type?: string;
@@ -480,6 +480,9 @@ export default function Exports() {
                             size: 2160,
                             type: WidthType.DXA,
                         },
+                        borders: {
+                            right: { style: 'none' }
+                        },
                         columnSpan: 2,
                         rowSpan: 1,
                         verticalAlign: AlignmentType.CENTER,
@@ -501,6 +504,9 @@ export default function Exports() {
                             size: 2160,
                             type: WidthType.DXA,
                         },
+                        borders: {
+                            right: { style: 'none' }
+                        },
                         columnSpan: 1,
                         rowSpan: 1,
                         verticalAlign: AlignmentType.CENTER,
@@ -521,6 +527,9 @@ export default function Exports() {
                         width: {
                             size: 2160,
                             type: WidthType.DXA,
+                        },
+                        borders: {
+                            right: { style: 'none' }
                         },
                         columnSpan: 2,
                         rowSpan: 1,
@@ -566,6 +575,9 @@ export default function Exports() {
                     new TableCell({
                         columnSpan: 2,
                         rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' }
+                        },
                         verticalAlign: AlignmentType.CENTER,
                         children: [
                             new Paragraph({
@@ -583,6 +595,9 @@ export default function Exports() {
                     new TableCell({
                         columnSpan: 1,
                         rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' }
+                        },
                         verticalAlign: AlignmentType.CENTER,
                         children: [
                             new Paragraph({
@@ -604,6 +619,9 @@ export default function Exports() {
                         },
                         columnSpan: 2,
                         rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' }
+                        },
                         verticalAlign: AlignmentType.CENTER,
                         children: [
                             new Paragraph({
@@ -757,6 +775,1462 @@ export default function Exports() {
                     })
                 ]
             }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 3,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Address:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 3,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.address)
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Religion:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.patient?.religion ?? '')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Cellphone No.:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.patient?.contact ?? '')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Email Address:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.patient?.email ?? '')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [
+                                    new TextRun({
+                                        text: 'Name of Parents',
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Father:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [
+                                    new TextRun({ text: consultation.father_name })
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Date of Birth:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(new Date(consultation.father_birthdate??'').toLocaleDateString('en-PH'))
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Occupation:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.father_occupation??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Mother:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [
+                                    new TextRun({ text: consultation.mother_name })
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Date of Birth:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(new Date(consultation.mother_birthdate??'').toLocaleDateString('en-PH'))
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Occupation:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.mother_occupation??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.LEFT,
+                                children: [
+                                    new TextRun({
+                                        text: 'IN CASE OF EMERGENCY',
+                                        font: 'Arial',
+                                        size: 22,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Person to be notified:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.person_to_be_notified == 'father' ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Father')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.DISTRIBUTE,
+                                children: [
+                                    new TextRun(consultation.person_to_be_notified == 'mother' ? "☑" : "☐"),
+                                    new TextRun('Mother')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: 'If parents cannot be reached',
+                                        font: 'Arial',
+                                        size: 22,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Cellphone No.:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.other_person_contact??'')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Name:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph(consultation.other_person_name??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Cellphone No.:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.other_person_contact??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Relation to the patient:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.relation??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun({
+                                        text: 'MEDICAL HISTORY',
+                                        font: 'Arial',
+                                        size: 22,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph('Blood Type:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'a' ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        borders: {
+                            left: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph('A')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        borders: {
+                            left: { style: 'none' },
+                            right: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'b' ? "☑" : "☐"),
+                                    new TextRun('B')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        borders: {
+                            right: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'ab' ? "☑" : "☐"),
+                                    new TextRun('AB')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        verticalAlign: 'center',
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'o' ? "☑" : "☐"),
+                                    new TextRun('O')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Height:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.height??'')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Weight:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.weight??'')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'History of Allergy:',
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'History of Asthma for the past 3 years:',
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.asthma_history ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph('YES')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph((consultation.asthma_history ? "☐" : "☑")+'NO')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.food_allergy.length > 0 ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: BorderStyle.SINGLE, size: 1, color: 'FFFFFF' },
+                            right: { style: BorderStyle.SINGLE, size: 1, color: 'FFFFFF' },
+                            top: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+                            left: { style: BorderStyle.SINGLE, size: 1, color: '000000' },
+                        },
+                        children: [
+                            new Paragraph('Food (pls. specify)')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' },
+                            left: { style: 'none' },
+                        },
+                        children: [
+                            new Paragraph(consultation.food_allergy.join(', '))
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        borders: { bottom: { style: 'none' } },
+                        children: [new Paragraph('')]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: { bottom: { style: 'none' } },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.medicine_allergy.length > 0 ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' },
+                            right: { style: 'none' },
+                        },
+                        children: [
+                            new Paragraph('Medicine (pls. specify)')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            bottom: { style: 'none' },
+                        },
+                        children: [
+                            new Paragraph(consultation.medicine_allergy.join(', '))
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        borders: { bottom: { style: 'none' } },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'Past/Present Illness (pls. check)',
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.RIGHT,
+                                children: [
+                                    new TextRun(consultation.other_allergy.length > 0 ? "☑" : "☐")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph('Others (pls. specify)')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.other_allergy.join(', '))
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' },
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.JUSTIFIED,
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('asthma') ? "☑" : "☐"),
+                                    new TextRun('Asthma')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        borders: {
+                            right: { style: 'none' },
+                            bottom: { style: 'none' }
+                        },
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.JUSTIFIED,
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('measles') ? "☑" : "☐"),
+                                    new TextRun('Measles')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'For PWD (Person With Disabilities)',
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('bronchitits') ? "☑" : "☐"),
+                                    new TextRun('Bronchitis')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('muscle spasm') ? "☑" : "☐"),
+                                    new TextRun('Muscle Spasm')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [new Paragraph('')]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('chicken pox') ? "☑" : "☐"),
+                                    new TextRun('Chicken Pox')
+                                ]
+                            }),
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('pneumonia') ? "☑" : "☐"),
+                                    new TextRun('Pneumonia')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('blind') ? "☑" : "☐"),
+                                    new TextRun('Blind or Visually Impaired')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('autism') ? "☑" : "☐"),
+                                    new TextRun('Autism')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('epilepsy') ? "☑" : "☐"),
+                                    new TextRun('Epilepsy')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('skin allergy') ? "☑" : "☐"),
+                                    new TextRun('Skin Allergy')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('deaf/mute') ? "☑" : "☐"),
+                                    new TextRun('Deaf/Mute')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('chronic illness') ? "☑" : "☐"),
+                                    new TextRun('Chronic Illness (stroke, diabetes)')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('gastritis') ? "☑" : "☐"),
+                                    new TextRun('Gastritis')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('tonsilitis') ? "☑" : "☐"),
+                                    new TextRun('Tonsilitis')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('orthopedically challenged') ? "☑" : "☐"),
+                                    new TextRun('Orthopedically Challenged')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('heart disease') ? "☑" : "☐"),
+                                    new TextRun('Heart Disease')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('Tuberculosis') ? "☑" : "☐"),
+                                    new TextRun('Tuberculosis')
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('congenital defects') ? "☑" : "☐"),
+                                    new TextRun('Congenital Defects')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.person_with_disability.includes('communication disorder') ? "☑" : "☐"),
+                                    new TextRun('Communication Disorder, Speech & Language Impairment (cleft lip/palate)')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('hypertension') ? "☑" : "☐"),
+                                    new TextRun('Hypertension')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('uti') ? "☑" : "☐"),
+                                    new TextRun('UTI (Urinary Tract Infection)')
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [new Paragraph('')]
+                    }),
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(consultation.illness_history.includes('others') ? "☑" : "☐"),
+                                    new TextRun('Others (pls specify)')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'A. Are you suffering from an illness at the moment? Which do you think we need to be aware of? Please state',
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation?.current_illness?.join(' ') ?? '')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: 'B. Did you undergo Surgical operation? Please state',
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(consultation.surgical_operation ? "☑" : "☐"),
+                                    new TextRun('YES')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Date of operation:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(new Date(consultation.operation_date??'').toLocaleDateString('en-PH'))
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Type of operation:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.operation_type??'')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Hospital:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.operation_hospital??'')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(!consultation.surgical_operation ? "☑" : "☐"),
+                                    new TextRun('NO')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 6,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('C. Have you been hospitalized for the past 6 months?')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(consultation.hospitalized ? "☑" : "☐"),
+                                    new TextRun('YES')
+                                ]
+                            }),
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Hospital:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.hospital_name??'')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Attending Physician:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.attending_physician??'')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('Diagnosis:')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 4,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph(consultation.diagnosis??'')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 2,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun(!consultation.hospitalized ? "☑" : "☐"),
+                                    new TextRun('NO')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 6,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 3,
+                        verticalAlign: 'bottom',
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: "TO BE SIGNED BY STUDENT'S PARENT/GUARDIAN ONLY",
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun("Student/Employee's Signation")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun("Parent/Guardian's Printed Name & Signature")
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            })
         ]
         return rows
     }
