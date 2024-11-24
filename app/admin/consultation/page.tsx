@@ -1,13 +1,10 @@
 'use client'
 
 import PatientFinder from "@/app/components/PatientFinder";
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 import Link from "next/link";
 import Exports from "@/app/utils/Exports";
 import { useCallback, useEffect, useState } from "react";
-import { toast } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import { saveAs } from "file-saver";
 
 interface Patient {
     _id: string
@@ -69,7 +66,7 @@ interface ConsultationState {
     asthma_history?: boolean | null;
     illness_history: string[];
     person_with_disability: string[];
-    current_illness?: string;
+    current_illness?: string[];
     surgical_operation: boolean | null;
     operation_date?: Date;
     operation_type?: string;
@@ -90,7 +87,7 @@ interface MedexState {
 
 export default function Consultation() {
     const [isHidden, setIsHidden] = useState<boolean>(true)
-    const [goTo, setGoTo] = useState<string>('')
+    // const [goTo, setGoTo] = useState<string>('')
     const [consultations, setConsultations] = useState<MedexState[]>([])
     const { exportConsultation } = Exports()
 
@@ -98,10 +95,10 @@ export default function Consultation() {
         setIsHidden(!isHidden)
     }
 
-    const setFinderPath = (link: string) => {
-        setGoTo(link)
-        togglePatientFinder()
-    }
+    // const setFinderPath = (link: string) => {
+    //     setGoTo(link)
+    //     togglePatientFinder()
+    // }
 
     const getConsultations = useCallback(async () => {
         await axios.get('/api/medical-record')
@@ -152,7 +149,7 @@ export default function Consultation() {
 
     return (
         <div className="w-full flex justify-center items-center">
-            <PatientFinder isHidden={isHidden} goTo={goTo} toggle={togglePatientFinder} />
+            <PatientFinder isHidden={isHidden} goTo={'consultation'} toggle={togglePatientFinder} />
             <section className="w-full md:w-2/3 rounded-lg shadow-xl p-5 bg-zinc-400">
                 <header className="mb-5 font-semibold flex justify-between items-center">
                     <h1 className="text-2xl">Consultations</h1>

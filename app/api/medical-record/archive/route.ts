@@ -1,6 +1,5 @@
 import connect from "@/lib/connect";
 import Consultation from "@/app/models/Consultation";
-import MedicalRecord from "@/app/models/MedicalRecord";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 

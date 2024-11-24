@@ -1,8 +1,8 @@
 import { saveAs } from 'file-saver'
-import { Document, Packer, PageOrientation, Table, TableRow, TableCell, HeightRule, Paragraph, TextRun, AlignmentType, WidthType, ImageRun, ITextWrapping, Tab, BorderStyle, TableLayout } from 'docx'
-import formLogo from '@/assets/images/form-logo.png'
+import { Document, Packer, PageOrientation, Table, TableRow, TableCell, HeightRule, Paragraph, TextRun, AlignmentType, WidthType, ImageRun, BorderStyle } from 'docx'
+// import formLogo from '@/assets/images/form-logo.png'
 import axios from 'axios'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 interface Patient {
     _id: string

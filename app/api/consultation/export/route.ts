@@ -3,7 +3,6 @@ import path from 'path'
 import Docxtemplater from 'docxtemplater'
 import pizzip from 'pizzip'
 import { NextResponse } from 'next/server'
-import { saveAs } from 'file-saver'
 import Consultation from '@/app/models/Consultation'
 
 export const POST = async (request: Request) => {

@@ -4,7 +4,7 @@ import Image from "next/image"
 import logo from "@/assets/images/sorsu-logo.png"
 import Link from "next/link"
 import { usePathname, useRouter } from "next/navigation"
-import { FC, useState } from "react"
+import { FC } from "react"
 import { FaTeeth, FaCommentMedical } from "react-icons/fa";
 import { LiaStethoscopeSolid } from "react-icons/lia";
 
