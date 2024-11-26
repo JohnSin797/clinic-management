@@ -7,6 +7,7 @@ import { usePathname, useRouter } from "next/navigation"
 import { FC } from "react"
 import { FaTeeth, FaCommentMedical } from "react-icons/fa";
 import { LiaStethoscopeSolid } from "react-icons/lia";
+import { IoMedkitOutline } from "react-icons/io5";
 
 interface SideNavProps {
     isHidden?: boolean;
@@ -111,7 +112,15 @@ const SideNav: FC<SideNavProps> = ({ isHidden, toggleMenu, finderFunction }) => 
                         Medicine Dispensed
                     </Link>
                 </li>
-                
+                <li>
+                    <Link 
+                        href={'/admin/medicines'} 
+                        className={`block p-2 w-full flex justify-start items-center gap-2 ${isActiveLink('/admin/medicines') ? 'bg-red-950' : ''}`}
+                    >
+                        <IoMedkitOutline className="text-2xl" />
+                        Medicine
+                    </Link>
+                </li>
                 <li>
                     <Link 
                         href={'/admin/health-record'} 
