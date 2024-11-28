@@ -1,5 +1,6 @@
 import connect from "@/lib/connect";
 import MedicalExamination from "@/app/models/MedicalExamination";
+import MedicalRecord from "@/app/models/MedicalRecord";
 import { NextResponse } from "next/server";
 import { Types } from "mongoose";
 
@@ -22,6 +23,11 @@ export const POST = async (request: Request) => {
         if (!medex) {
             return new NextResponse(JSON.stringify({message: 'Failed to create medical examination'}), {status: 400});
         }
+        await MedicalRecord.create({
+            patient: body?.patient,
+            medical_examination: medex._id,
+            consultation_type: 'medical-examination',
+        });
 
         return new NextResponse(JSON.stringify({message: 'OK', medex: medex}), {status: 200});
     } catch (error: unknown) {

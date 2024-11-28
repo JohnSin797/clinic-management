@@ -6,6 +6,8 @@ interface IPatient extends Document {
     last_name: string;
     extension?: string;
     position: 'student' | 'teacher' | 'non-teaching-staff';
+    course?: string;
+    year?: 'I' | 'II' | 'III' | 'IV';
     department: string;
     id_number: string;
     birthdate: Date;
@@ -60,6 +62,8 @@ const patientSchema = new Schema<IPatient>(
             type: String,
             required: true,
         },
+        course: String,
+        year: String,
         id_number: {
             type: String,
             required: true,

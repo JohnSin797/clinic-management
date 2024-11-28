@@ -1,6 +1,6 @@
 'use client'
 
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { FC, FormEvent, useState } from "react"
 import { useRouter } from "next/navigation";
 import { ToastContainer, toast } from "react-toastify";
@@ -32,11 +32,11 @@ const PatientFinder: FC<PatientFinderProps> = ({ isHidden, goTo, toggle }) => {
                     }
                 },
                 error: {
-                    render({ data }: {data: AxiosResponse}) {
+                    render({ data }: {data: AxiosError}) {
                         console.log(data)
                         Swal.fire({
                             title: 'Error',
-                            text: data.data?.message,
+                            text: data?.message,
                             icon: 'error'
                         })
                         return 'Error'

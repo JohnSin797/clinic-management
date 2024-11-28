@@ -38,8 +38,8 @@ export const GET = async (request: Request) => {
         await connect();
         let schedule;
         if (!email) {
-            // schedule = await Appointment.find({ deletedAt: null }).populate('patient').exec();
-            return new NextResponse(JSON.stringify({message: 'unathorized'}), {status: 401});
+            schedule = await Appointment.find({ deletedAt: null }).populate('patient').exec();
+            // return new NextResponse(JSON.stringify({message: 'OK',}), {status: 200});
         } else {
             const patient = await Patient.findOne({ email: email }).exec();
             if (!patient) {

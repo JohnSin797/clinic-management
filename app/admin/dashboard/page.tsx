@@ -2,29 +2,10 @@
 
 import Clock from "@/app/components/Clock"
 import Calendar from "@/app/components/Calendar"
-import { FaPaperPlane } from "react-icons/fa";
-import { 
-    Chart as ChartJS,  
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend,
-    // ChartData
-} from "chart.js";
-// import { Bar } from "react-chartjs-2";
-import { FormEvent, useCallback, useEffect, useState } from "react";
-import axios from "axios";
-
-ChartJS.register(
-    CategoryScale,
-    LinearScale,
-    BarElement,
-    Title,
-    Tooltip,
-    Legend
-)
+import { FaPaperPlane } from "react-icons/fa"
+import { FormEvent, useCallback, useEffect, useState } from "react"
+import axios from "axios"
+import DataTable from "@/app/components/DataTable"
 
 interface Patient {
     _id: string;
@@ -81,6 +62,13 @@ interface Post {
     createdAt: Date;
 }
 
+interface Records {
+    findings: string;
+    year: number;
+    month: number;
+    count: number;
+}
+
 export default function Dashboard() {
     const [patients, setPatients] = useState<PatientState>({
         patients: [],
@@ -90,79 +78,44 @@ export default function Dashboard() {
         appointments: [],
         loading: true
     })
-    // const labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July']
     const [postContent, setPostContent] = useState<string>('')
-    const [posts, setPosts] = useState<Post[]>([])
-
-    // const options = {
-    //     responsive: true,
-    //     plugins: {
-    //         legend: {
-    //             position: 'top' as const,
-    //         },
-    //         title: {
-    //             display: true,
-    //             text: 'Clinic Consultations',
-    //         },
-    //     },
-    // }
-
-    // const dataArr = [0, 1, 10, 2, 13, 15, 3, 1, 0, 0, 0, 0]
-
-    // const data: ChartData<"bar", number[], string> = {
-    //     labels,
-    //     datasets: [
-    //     {
-    //         label: "Number of consultations",
-    //         data: dataArr, 
-    //         backgroundColor: "rgba(69, 10, 10, 0.8)", 
-    //     },
-    //     ],
-    // }
-
-    
+    const [posts, setPosts] = useState<Post[]>([])    
+    const [records, setRecords] = useState<Records[]>([])
+    const [recordsArr, setRecordsArr] = useState<Records[]>([])
+    // const [selectedYear, setSelectedYear] = useState<number>(new Date().getFullYear())
 
     const dateFormat: Intl.DateTimeFormatOptions = {
         timeZone: 'Asia/Manila',
         year: 'numeric',
-        month: 'short', // Abbreviated month format
+        month: 'short', 
         day: 'numeric',
         hour: 'numeric',
         minute: 'numeric',
-        hour12: true, // 12-hour format
-      }
+        hour12: true, 
+    }
 
-    // const getAppointments = useCallback(async () => {
-    //     await axios.get('/api/schedule')
-    //     .then(response => {
-    //         const app = response.data.schedule
-    //         setAppointments({
-    //             appointments: app,
-    //             loading: false
-    //         })
-    //     })
-    //     .catch(error => {
-    //         console.log(error)
-    //         setAppointments({
-    //             ...appointments,
-    //             loading: false
-    //         })
-    //     })
-    // }, [])
+    // const illnessList: string[] = [
+    //     'headache',
+    //     'cough',
+    //     'cold',
+    //     'flu',
+    //     'allergies',
+    //     'stomach ache',
+    //     'uti',
+    //     'tootache',
+    //     'injury',
+    //     'infected wounds',
+    //     'tuberculosis',
+    //     'menstrual cramps'
+    // ]
 
-    // const getPatients = useCallback(async () => {
-    //     await axios.get('/api/patient')
-    //         .then(response => {
-    //             const p = response.data?.patient;
-    //             setPatients({
-    //                 patients: p,
-    //                 loading: false
-    //             });
-    //         })
-    //         .catch(error => {
-    //             console.log(error);
-    //         });
-    // }, []); 
+    // const illnessData: { [key: string]: number[] } = illnessList.reduce(
+    //     (acc: { [key: string]: number[] }, symptom: string) => {
+    //         acc[symptom] = Array(12).fill(0);
+    //         return acc;
+    //     },
+    //     {}
+    // )
 
     const getData = useCallback(async () => {
         await axios.get('/api/dashboard')
@@ -170,6 +123,10 @@ export default function Dashboard() {
             const p = response.data?.patient
             const app = response.data?.appointment
             const posts = response.data?.posts
+            const meds: Records[] = response.data?.meds
+            const result = meds.filter(row => row.year === new Date().getFullYear())
+            setRecords(result)
+            setRecordsArr(meds)
             setPatients({
                 patients: p,
                 loading: false
@@ -183,8 +140,6 @@ export default function Dashboard() {
     }, [])
     
     useEffect(() => {
-        // getPatients();
-        // getAppointments();
         getData();
     }, [getData]);
 
@@ -203,6 +158,9 @@ export default function Dashboard() {
             setPostContent('')
         })
     }
+
+    const currentYear = new Date().getFullYear();
+    const years = Array.from({ length: 6 }, (_, i) => currentYear - i);
 
     return (
         <div className="w-full p-5 md:px-20">
@@ -235,211 +193,27 @@ export default function Dashboard() {
                     <Calendar appointments={appointments.appointments} />
                 </section>
             </div>
-            {/* <section className="w-full bg-zinc-200 p-5">
-                <Bar options={options} data={data} />
-            </section> */}
-            <section className="w-full bg-zinc-200 p-5 mb-10">
-                <table className="w-full table-auto">
-                    <thead>
-                        <tr>
-                            <th></th>
-                            <th>Jan</th>
-                            <th>Feb</th>
-                            <th>Mar</th>
-                            <th>Apr</th>
-                            <th>May</th>
-                            <th>Jun</th>
-                            <th>Jul</th>
-                            <th>Aug</th>
-                            <th>Sep</th>
-                            <th>Oct</th>
-                            <th>Nov</th>
-                            <th>Dec</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <th className="p-2">Headache</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Cough</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Cold</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Flu</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Allergies</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Stomach ache</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">UTI</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Toothache</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Injury</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Infected wounds</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Tuberculosis</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                        <tr>
-                            <th className="p-2">Menstrual cramps</th>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                            <td className="border border-white p-2"></td>
-                        </tr>
-                    </tbody>
-                </table>
+            <section>
+            </section>
+            <section className="w-full bg-zinc-200 p-5 mb-10 overflow-auto h-96">
+                <header className="w-full flex justify-center items-center mb-5">
+                    <select 
+                        className="text-xs p-1 rounded"
+                        onChange={e=>{
+                            const cy = Number(e.target.value)
+                            const result = recordsArr.filter(row => row.year === cy)
+                            setRecords(result)
+                            // setSelectedYear(cy)
+                        }}
+                    >
+                        {
+                            years.map(year => (
+                                <option key={year} value={year}>{year}</option>
+                            ))
+                        }
+                    </select>
+                </header>
+                <DataTable data={records} />
             </section>
             <div className="w-full md:px-20 flex flex-col justify-center items-center gap-10">
                 <section className="w-full md:w-2/3">

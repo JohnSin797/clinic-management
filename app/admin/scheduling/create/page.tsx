@@ -1,9 +1,11 @@
 'use client'
 
 import axios from "axios";
+import Link from "next/link";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react"
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
+import Swal from "sweetalert2";
 interface Patient {
     _id: string;
     first_name: string;
@@ -39,9 +41,20 @@ export default function Create() {
     const handleSubmit = async (e: FormEvent) => {
         e.preventDefault()
         await axios.post('/api/schedule/admin', scheduleForm)
-        .then(response => {
-            const sched = response.data?.schedules
-            
+        .then(() => {
+            setScheduleForm({
+                patient: '',
+                schedule: new Date(),
+                consultation_type: 'consultation',
+            })
+            toast.success('Success')
+        })
+        .catch(error => {
+            console.log(error)
+            Swal.fire({
+                title: 'Error',
+                text: error.response?.data?.message
+            })
         })
     }
     
@@ -61,7 +74,8 @@ export default function Create() {
         <div className="w-full flex justify-center items-center">
             <ToastContainer position="bottom-right" />
             <section className="w-full md:w-[550px] rounded-lg shadow-xl p-5 bg-zinc-400">
-                <header className="mb-5 font-semibold flex justify-between items-center">
+                <header className="mb-5 font-semibold flex justify-start items-center gap-2">
+                    <Link href={'/admin/scheduling'} className="p-2 rounded text-white text-sm font-bold bg-blue-600 hover:bg-blue-900">back</Link>
                     <h1 className="text-2xl">Create Appointment</h1>
                 </header>
                 <form onSubmit={handleSubmit}>
@@ -90,7 +104,7 @@ export default function Create() {
                         <div className="w-full group">
                             <label htmlFor="schedule" className="text-xs font-bold">Schedule:</label>
                             <input 
-                                type="date" 
+                                type="datetime-local" 
                                 name="schedule" 
                                 id="schedule" 
                                 className="w-full p-2 rounded" 
@@ -100,14 +114,25 @@ export default function Create() {
                         </div>
                         <div className="w-full group">
                             <label htmlFor="consultation_type" className="text-xs font-bold">Consultation Type:</label>
-                            <input 
+                            {/* <input 
                                 type="text" 
                                 name="consultation_type" 
                                 id="consultation_type" 
                                 className="w-full p-2 rounded" 
                                 value={scheduleForm.consultation_type}
                                 onChange={handleOnChange}
-                            />
+                            /> */}
+                            <select 
+                                name="consultation_type" 
+                                id="consultation_type"
+                                className="w-full p-2 rounded" 
+                                value={scheduleForm.consultation_type}
+                                onChange={handleOnChange}
+                            >
+                                <option value="consultation">Consultation</option>
+                                <option value="medical-examination">Medical Examination</option>
+                                <option value="dental-consultation">Dental Consultation</option>
+                            </select>
                         </div>
                         <button className="p-2 rounded text-white text-xs font-bold bg-indigo-600 hover:bg-indigo-900">
                             submit

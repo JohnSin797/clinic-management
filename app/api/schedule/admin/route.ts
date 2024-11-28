@@ -10,8 +10,7 @@ export const POST = async (request: Request) => {
         if (!result) {
             return new NextResponse(JSON.stringify({message: 'Failed to create schedule'}), {status: 400});
         }
-        const apps = await Appointment.find({ deletedAt: null });
-        return new NextResponse(JSON.stringify({message: 'OK', schedules: apps}));
+        return new NextResponse(JSON.stringify({message: 'OK'}), {status: 200});
     } catch (error: unknown) {
         let message = '';
         if (error instanceof Error) {

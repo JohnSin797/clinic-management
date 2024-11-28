@@ -12,6 +12,7 @@ interface Patient {
     extension?: string;
     position: 'student' | 'teacher' | 'non-teaching-staff';
     course?: string | null;
+    year?: number | null;
     department: string;
     id_number: string;
     birthdate: Date;
@@ -74,56 +75,59 @@ interface ConsultationState {
     createdAt: Date | null;
 }
 
+interface MedicalState {
+    patient: Patient;
+    civil_status: string;
+    purpose: string;
+    past_medical_history: string;
+    family_history: string;
+    occupational_history: string;
+    body_mass_index: string;
+    skin: string;
+    heads: string;
+    eyes: string;
+    ears: string;
+    mouth: string;
+    neck: string;
+    chest: string;
+    abdomen: string;
+    rectal: string;
+    musculo_skeletal: string;
+    extremeties: string;
+    other: string;
+    blood_pressure: string;
+    temperature: string;
+    hr: string;
+    rr: string;
+    height: string;
+    weight: string;
+    hearing: string;
+    vision: string;
+    vision_l: string;
+    vision_r: string;
+    chest_xray: string;
+    xray_type: string;
+    complete_blood_count: string;
+    routine_urinalysis: string;
+    fecalysis: string;
+    hepatitis_b_screening: string;
+    metaphetamine: string;
+    tetrahydrocannabinol: string;
+    image: string;
+    classification: string;
+    needs_treatment: string[];
+    remarks: string;
+    createdAt: Date;
+}
+
 export default function Exports() {
     const [formLogo, setFormLogo] = useState<Buffer | null>(null)
     const [phLogo, setPHLogo] = useState<Buffer | null>(null)
-    // const [consultation, setConsultation] = useState<ConsultationState>({
-    //     patient: null,
-    //     address: '',
-    //     father_name: '',
-    //     father_birthdate: new Date(),
-    //     father_occupation: '',
-    //     mother_name: '',
-    //     mother_birthdate: new Date(),
-    //     mother_occupation: '',
-    //     height: '',
-    //     weight: '',
-    //     person_to_be_notified: '',
-    //     emergency_contact: '',
-    //     other_person_name: '',
-    //     other_person_contact: '',
-    //     relation: '',
-    //     food_allergy: [''],
-    //     medicine_allergy: [''],
-    //     other_allergy: [''],
-    //     asthma_history: null,
-    //     illness_history: [],
-    //     person_with_disability: [],
-    //     current_illness: '',
-    //     surgical_operation: null,
-    //     operation_date: new Date(),
-    //     operation_type: '',
-    //     operation_hospital: '',
-    //     hospitalized: null,
-    //     hospital_name: '',
-    //     attending_physician: '',
-    //     diagnosis: '',
-    //     createdAt: null,
-    // })
 
-    const exportConsultation = async (consultation: ConsultationState) => {
-        let header: TableRow[] = []
-        await addHeader()
-        .then(response => {
-            if (response)
-            header = response 
-        })
-        // await getConsultation(id)
-        // if (!consultation) {
-        //     console.log("Consultation data is missing.")
-        //     return; // Exit if consultation data is not available
-        // }
-            const body = addBody(consultation)
+    const exportConsultation = (consultation: ConsultationState, patient: Patient) => {
+        
+        const header = addHeader() ?? []
+            const body = addBody(consultation, patient)
             const rows = [...header, ...body] 
             const doc = new Document({
                 sections: [{
@@ -131,8 +135,8 @@ export default function Exports() {
                         page: {
                             size: {
                                 orientation: PageOrientation.PORTRAIT,  
-                                width: 12240,  
-                                height: 20160, 
+                                width: 11906,  
+                                height: 16838, 
                             },
                             margin: {
                                 top: 567,    
@@ -152,22 +156,637 @@ export default function Exports() {
                 }]
             })
             Packer.toBlob(doc).then(blob => {
-                saveAs(blob, 'test.docx')
+                saveAs(blob, patient.first_name+' '+patient.middle_name+' '+patient.last_name+' '+patient.extension+ '-consultation-form.docx')
             })
     }
 
-    // const getConsultation = async (id: string) => {
-    //     try {
-    //         const response = await axios.get(`/api/consultation?consultation_id=${id}`)
-    //         const con = response.data?.consultation
-    //         if (con) {
-    //             console.log(con)
-    //             setConsultation(con)
-    //         }
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+    const exportMedicalExamination = (medex: MedicalState, patient: Patient) => {
+        const header = addHeader() ?? []
+        const body = [
+            new TableRow({
+                height: {
+                    value: 346,
+                    rule: HeightRule.EXACT,
+                },
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        width: {
+                            size: 10785,
+                            type: WidthType.DXA,
+                        },
+                        verticalAlign: AlignmentType.CENTER,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                spacing: {
+                                    before: 10,
+                                    after: 10,
+                                },
+                                children: [
+                                    new TextRun({
+                                        text: 'MEDICAL EXAMINATION FORM',
+                                        font: 'Arial',
+                                        size: 22,
+                                        bold: true,
+                                    }),
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 6,
+                        width: {
+                            size: 6480,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 2,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('Document Control:'),
+                                    new TextRun('')
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('LAST NAME:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.last_name)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('DATE:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(new Date(medex.createdAt).toLocaleDateString('en-PH'))
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('FIRST NAME:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.first_name)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('BIRTHDAY:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(new Date(patient.birthdate).toLocaleDateString('en-PH'))
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('MIDDLE NAME:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.middle_name)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('DATE:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun((new Date().getFullYear()-new Date(patient.birthdate).getFullYear()).toString())
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('GENDER:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.sex)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('CIVIL STATUS:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(medex.civil_status)
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('CELLPHONE No:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.contact)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('EMAIL-ADDRESS:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.email)
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        rowSpan: 2,
+                        width: {
+                            size: 1440,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('ADDRESS:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 2,
+                        width: {
+                            size: 5040,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(patient.address)
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('COURSE & YEAR or DESIGNATION:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun((patient.course + ' ')),
+                                    new TextRun(patient.year?.toString()??'')
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 1,
+                        width: {
+                            size: 2160,
+                            type: WidthType.DXA,
+                        },
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun('PURPOSE:')
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun(medex.purpose)
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('PAST MEDICAL HISTORY')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 2,
+                        children: [
+                            new Paragraph(medex.past_medical_history)
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('FAMILY HISTORY')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 2,
+                        children: [
+                            new Paragraph(medex.family_history)
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 8,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            // new TableRow({
+            //     children: [
+            //         new TableCell({
+            //             columnSpan: 8,
+            //             rowSpan: 1,
+            //             children: [
+            //                 new Paragraph('OCCUPATIONAL HISTORY')
+            //             ]
+            //         })
+            //     ]
+            // }),
+            // new TableRow({
+            //     children: [
+            //         new TableCell({
+            //             columnSpan: 8,
+            //             rowSpan: 2,
+            //             children: [
+            //                 new Paragraph(medex.occupational_history)
+            //             ]
+            //         })
+            //     ]
+            // }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 3,
+                        verticalAlign: 'bottom',
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                children: [
+                                    new TextRun({
+                                        text: "TO BE SIGNED BY STUDENT'S PARENT/GUARDIAN ONLY",
+                                        font: 'Arial',
+                                        size: 20,
+                                        bold: true,
+                                    })
+                                ]
+                            })
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 2,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    }),
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 2,
+                        children: [
+                            new Paragraph('')
+                        ]
+                    })
+                ]
+            }),
+            new TableRow({
+                children: [
+                    new TableCell({
+                        columnSpan: 3,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun("Student/Employee's Signation")
+                                ]
+                            })
+                        ]
+                    }),
+                    new TableCell({
+                        columnSpan: 5,
+                        rowSpan: 1,
+                        children: [
+                            new Paragraph({
+                                alignment: AlignmentType.CENTER,
+                                children: [
+                                    new TextRun("Parent/Guardian's Printed Name & Signature")
+                                ]
+                            })
+                        ]
+                    })
+                ]
+            })
+        ]
+        const rows = [...header, ...body]
+        const doc = new Document({
+            sections: [{
+                properties: {
+                    page: {
+                        size: {
+                            orientation: PageOrientation.PORTRAIT,  
+                            width: 12240,  
+                            height: 20160, 
+                        },
+                        margin: {
+                            top: 567,    
+                            right: 567,  
+                            bottom: 567, 
+                            left: 567,   
+                        },
+                    },
+                },
+                children: [
+                    new Table({
+                        alignment: AlignmentType.CENTER,
+                        width: { size: "100%", type: "auto" },
+                        rows: rows ?? [new TableRow({children:[]})],
+                    })
+                ]
+            }]
+        })
+        Packer.toBlob(doc).then(blob => {
+            saveAs(blob, 'medical-examination-form.docx')
+        })
+    }
 
     useEffect(() => {
         getImage('form-logo.png')
@@ -193,7 +812,7 @@ export default function Exports() {
         })
     }
 
-    const addHeader = async () => {
+    const addHeader = () => {
         if(formLogo && phLogo)
         {const header = [
             new TableRow({
@@ -368,7 +987,7 @@ export default function Exports() {
         return header}
     }
 
-    const addBody = (consultation: ConsultationState) => {
+    const addBody = (consultation: ConsultationState, patient: Patient) => {
         const rows = [
             new TableRow({
                 height: {
@@ -424,7 +1043,7 @@ export default function Exports() {
                                 },
                                 children: [
                                     new TextRun({
-                                        text: 'Course/Designation: '+consultation?.patient?.course,
+                                        text: 'Course/Designation: '+patient?.course,
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -491,7 +1110,7 @@ export default function Exports() {
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
-                                        text: consultation?.patient?.last_name,
+                                        text: patient?.last_name,
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -515,7 +1134,7 @@ export default function Exports() {
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
-                                        text: consultation?.patient?.first_name,
+                                        text: patient?.first_name,
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -539,7 +1158,7 @@ export default function Exports() {
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
-                                        text: consultation?.patient?.middle_name,
+                                        text: patient?.middle_name,
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -560,7 +1179,7 @@ export default function Exports() {
                                 alignment: AlignmentType.CENTER,
                                 children: [
                                     new TextRun({
-                                        text: consultation?.patient?.extension,
+                                        text: patient?.extension,
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -685,7 +1304,7 @@ export default function Exports() {
                             new Paragraph({
                                 children: [
                                     new TextRun({
-                                        text: new Date(consultation.patient?.birthdate ?? '').toISOString().substring(0, 10),
+                                        text: new Date(patient?.birthdate ?? '').toISOString().substring(0, 10),
                                         font: 'Arial',
                                         size: 20,
                                     })
@@ -717,7 +1336,7 @@ export default function Exports() {
                             new Paragraph({
                                 children: [
                                     new TextRun('Male:'),
-                                    (consultation.patient?.sex == 'male' ? 
+                                    (patient?.sex == 'male' ? 
                                     new TextRun("☑")
                                     :
                                     new TextRun("☐")),
@@ -733,7 +1352,7 @@ export default function Exports() {
                             new Paragraph({
                                 children: [
                                     new TextRun('Female:'),
-                                    (consultation.patient?.sex == 'female' ? 
+                                    (patient?.sex == 'female' ? 
                                     new TextRun("☑")
                                     :
                                     new TextRun("☐")),
@@ -756,7 +1375,7 @@ export default function Exports() {
                         columnSpan: 4,
                         verticalAlign: 'center',
                         children: [
-                            new Paragraph((new Date().getFullYear() - new Date(consultation.patient?.birthdate??'').getFullYear()).toString())
+                            new Paragraph((new Date().getFullYear() - new Date(patient?.birthdate??'').getFullYear()).toString())
                         ]
                     }),
                     new TableCell({
@@ -770,7 +1389,7 @@ export default function Exports() {
                         columnSpan: 2,
                         verticalAlign: 'center',
                         children: [
-                            new Paragraph(consultation.patient?.nationality??'')
+                            new Paragraph(patient?.nationality??'')
                         ]
                     })
                 ]
@@ -806,7 +1425,7 @@ export default function Exports() {
                         rowSpan: 1,
                         verticalAlign: 'center',
                         children: [
-                            new Paragraph(consultation.patient?.religion ?? '')
+                            new Paragraph(patient?.religion ?? '')
                         ]
                     }),
                 ]
@@ -826,7 +1445,7 @@ export default function Exports() {
                         rowSpan: 1,
                         verticalAlign: 'center',
                         children: [
-                            new Paragraph(consultation.patient?.contact ?? '')
+                            new Paragraph(patient?.contact ?? '')
                         ]
                     })
                 ]
@@ -846,7 +1465,7 @@ export default function Exports() {
                         rowSpan: 1,
                         verticalAlign: 'center',
                         children: [
-                            new Paragraph(consultation.patient?.email ?? '')
+                            new Paragraph(patient?.email ?? '')
                         ]
                     })
                 ]
@@ -1221,7 +1840,7 @@ export default function Exports() {
                             new Paragraph({
                                 alignment: AlignmentType.RIGHT,
                                 children: [
-                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'a' ? "☑" : "☐")
+                                    new TextRun(patient?.blood_type?.toLowerCase() == 'a' ? "☑" : "☐")
                                 ]
                             })
                         ]
@@ -1249,7 +1868,7 @@ export default function Exports() {
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
-                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'b' ? "☑" : "☐"),
+                                    new TextRun(patient?.blood_type?.toLowerCase() == 'b' ? "☑" : "☐"),
                                     new TextRun('B')
                                 ]
                             })
@@ -1266,7 +1885,7 @@ export default function Exports() {
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
-                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'ab' ? "☑" : "☐"),
+                                    new TextRun(patient?.blood_type?.toLowerCase() == 'ab' ? "☑" : "☐"),
                                     new TextRun('AB')
                                 ]
                             })
@@ -1280,7 +1899,7 @@ export default function Exports() {
                             new Paragraph({
                                 alignment: AlignmentType.CENTER,
                                 children: [
-                                    new TextRun(consultation.patient?.blood_type?.toLowerCase() == 'o' ? "☑" : "☐"),
+                                    new TextRun(patient?.blood_type?.toLowerCase() == 'o' ? "☑" : "☐"),
                                     new TextRun('O')
                                 ]
                             })
@@ -2192,17 +2811,17 @@ export default function Exports() {
                     })
                 ]
             }),
-            new TableRow({
-                children: [
-                    new TableCell({
-                        columnSpan: 5,
-                        rowSpan: 1,
-                        children: [
-                            new Paragraph('')
-                        ]
-                    })
-                ]
-            }),
+            // new TableRow({
+            //     children: [
+            //         new TableCell({
+            //             columnSpan: 5,
+            //             rowSpan: 2,
+            //             children: [
+            //                 new Paragraph('')
+            //             ]
+            //         })
+            //     ]
+            // }),
             new TableRow({
                 children: [
                     new TableCell({
@@ -2242,5 +2861,5 @@ export default function Exports() {
         return formattedDate
     }
 
-    return { exportConsultation }
+    return { exportConsultation, exportMedicalExamination }
 }

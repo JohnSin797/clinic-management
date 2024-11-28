@@ -4,10 +4,11 @@ import Image from "next/image";
 import logo from "@/assets/images/sorsu-logo.png";
 import GoogleSignIn from "./components/GoogleSignIn";
 import { FormEvent, useState } from "react";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import 'react-toastify/dist/ReactToastify.css';
 import { useRouter } from "next/navigation";
+import Swal from "sweetalert2";
 
 export default function Home() {
   const [email, setEmail] = useState<string>('')
@@ -16,20 +17,41 @@ export default function Home() {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    await axios.post('/api/auth/sign-in', {
-      email: email,
-      password: password,
-    })
-    .then(response => {
-      // const user = response.data?.user
-      console.log(response)
-      router.push('/admin/dashboard')
-      toast.success('Logged in')
-    })
-    .catch(error => {
-      console.log(error)
-      toast.error(error.response?.data?.message)
-    })
+    // await axios.post('/api/auth/sign-in', {
+    //   email: email,
+    //   password: password,
+    // })
+    // .then(response => {
+    //   // const user = response.data?.user
+    //   console.log(response)
+    //   router.push('/admin/dashboard')
+    //   toast.success('Logged in')
+    // })
+    // .catch(error => {
+    //   console.log(error)
+    //   toast.error(error.response?.data?.message)
+    // })
+    toast.promise(
+      axios.post('/api/auth/sign-in', {
+        email: email,
+        password: password,
+      }),
+      {
+        pending: 'Logging in...',
+        success: {
+          render() {
+            router.push('/admin/dashboard')
+            return 'Logged in'
+          }
+        },
+        error: {
+          render({ data }: { data: AxiosError }) {
+            Swal.fire(data.message)
+            return 'Error'
+          }
+        }
+      }
+    )
   }
 
   return (

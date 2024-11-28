@@ -1,6 +1,7 @@
 'use client'
 
-import axios, { AxiosResponse } from "axios";
+import MedicineDispenser from "@/app/components/MedicineDispenser";
+import axios, { AxiosError, AxiosResponse } from "axios";
 import { ChangeEvent, FormEvent, useCallback, useEffect, useState } from "react";
 import Select, { MultiValue } from "react-select";
 // import { useRouter } from "next/navigation";
@@ -81,6 +82,12 @@ interface ConsultationState {
     diagnosis?: string;
 }
 
+interface Medicine {
+    _id: string;
+    medicine_name: string;
+    quantity: number;
+}
+
 export default function Consultation({ params }: { params: { slug: string }}) {
     // const router = useRouter()
     const [patient, setPatient] = useState<Patient>({
@@ -153,6 +160,9 @@ export default function Consultation({ params }: { params: { slug: string }}) {
     const [selectedIllness, setSelectedIllness] = useState<IllnessOption[]>([])
     const [pwd, setPWD] = useState<IllnessOption[]>([])
     const [isMounted, setIsMounted] = useState<boolean>(false)
+    const [hideDispenser, setHideDispenser] = useState<boolean>(true)
+    const [medicineOptions, setMedicineOptions] = useState<Medicine[]>([])
+    const [recordId, setRecordId] = useState<string>('')
 
 
     const getPatient = useCallback(async () => {
@@ -187,10 +197,31 @@ export default function Consultation({ params }: { params: { slug: string }}) {
         }) 
     }, [])
 
+    const getMedicines = useCallback(async () => {
+        await axios.get('/api/medicine')
+        .then(response => {
+            const meds = response.data?.medicines
+            // setMedicine(meds)
+            setMedicineOptions(meds)
+        })
+        .catch(error => {
+            console.log(error)
+        })
+    }, [])
+
     useEffect(() => {
         setIsMounted(true)
         getPatient()
-    }, [getPatient])
+        getMedicines()
+    }, [getPatient, getMedicines])
+
+    // const setMedicine = (meds: Medicine[]) => {
+    //     const temp = meds.map(item => ({
+    //         value: item._id,
+    //         label: item.medicine_name
+    //     }))
+    //     setMedicineOptions(temp)
+    // }
 
     const handleOnChange = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
@@ -283,12 +314,20 @@ export default function Consultation({ params }: { params: { slug: string }}) {
             axios.post('/api/consultation', updatedConsultation),
             {
                 pending: 'Submitting form...',
-                success: 'Form submitted',
-                error: {
+                success: {
                     render({ data }: { data: AxiosResponse }) {
+                        console.log(data)
+                        const rec = data.data?.record
+                        setRecordId(rec?._id)
+                        setHideDispenser(false)
+                        return 'Form submitted'
+                    }
+                },
+                error: {
+                    render({ data }: { data: AxiosError }) {
                         Swal.fire({
                             title: 'Error',
-                            text: data?.data?.message,
+                            text: data?.message,
                             icon: 'error'
                         })
                         return 'Error'
@@ -303,9 +342,14 @@ export default function Consultation({ params }: { params: { slug: string }}) {
         return null
     }
 
+    const toggleDispenser = () => {
+        setHideDispenser(!hideDispenser)
+    }
+
     return (
         <div className="w-full flex justify-center items-center py-10">
             <ToastContainer position="bottom-right" />
+            <MedicineDispenser isHidden={hideDispenser} toggle={toggleDispenser} medicines={medicineOptions} record={recordId} />
             <section className="w-full md:w-2/3 rounded-lg shadow-xl p-5 bg-zinc-400">
                 <header className="mb-5 font-semibold flex justify-between items-center">
                     <h1 className="text-2xl">Consultations</h1>

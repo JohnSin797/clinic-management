@@ -13,7 +13,7 @@ export const GET = async (request: Request) => {
         await connect();
 
         if (!email) {
-            logs = await PatientLog.find({ deletedAt: null });
+            logs = await PatientLog.find({ deletedAt: null }).populate('patient').sort({ createdAt: -1 });
         } else {
             const patient = await Patient.findOne({ email: email });
             logs = await PatientLog.find({ patient: patient?._id, deletedAt: null }).populate('patient');

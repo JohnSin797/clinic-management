@@ -13,6 +13,8 @@ interface Patient {
     extension?: string;
     position: 'student' | 'teacher' | 'non-teaching-staff' | '';
     department: string;
+    course: string;
+    year: string;
     id_number: string;
     birthdate: Date | null;
     nationality: string;
@@ -53,6 +55,8 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
         extension: '',
         position: '',
         department: '',
+        course: '',
+        year: '',
         id_number: '',
         birthdate: null, 
         nationality: '',
@@ -129,6 +133,8 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                 extension: '',
                 position: '',
                 department: '',
+                course: '',
+                year: '',
                 id_number: '',
                 birthdate: null, 
                 nationality: '',
@@ -270,6 +276,46 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                     </div>
                     <div className="w-full flex flex-col md:flex-row justify-center items-center gap-2">
                         <div className="w-full">
+                            <label htmlFor="course" className="text-xs font-semibold">Course:</label>
+                            <input 
+                                type="text" 
+                                name="course" 
+                                id="course" 
+                                className="w-full p-2 rounded text-sm" 
+                                placeholder="Course"
+                                value={patient.course}
+                                onChange={handleOnChange}
+                            />
+                        </div>
+                        <div className="w-full">
+                            <label htmlFor="year" className="text-xs font-semibold">Year:</label>
+                            {/* <input 
+                                type="text" 
+                                name="id_number" 
+                                id="id_number" 
+                                className="w-full p-2 rounded text-sm" 
+                                placeholder="ID Number"
+                                value={patient.id_number}
+                                onChange={handleOnChange}
+                                required
+                            /> */}
+                            <select 
+                                className="w-full p-2 rounded text-sm"
+                                name="year" 
+                                id="year"
+                                value={patient.year}
+                                onChange={handleOnChange}
+                            >
+                                <option value="">--Select Year--</option>
+                                <option value="I">I</option>
+                                <option value="II">II</option>
+                                <option value="III">III</option>
+                                <option value="IV">IV</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div className="w-full flex flex-col md:flex-row justify-center items-center gap-2">
+                        <div className="w-full">
                             <label htmlFor="birthdate" className="text-xs font-semibold">Birthdate:</label>
                             <input 
                                 type="date" 
@@ -321,7 +367,6 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                         onChange={() =>
                                             setPatient({ ...patient, sex: patient.sex === 'male' ? 'female' : 'male' })
                                         } 
-                                        required
                                     />
                                     <label htmlFor="male" className="text-xs">Male</label>
                                 </div>
@@ -334,7 +379,6 @@ const PatientForm: FC<PatientProps> = ({ email_address }) =>  {
                                         onChange={() =>
                                             setPatient({ ...patient, sex: patient.sex === 'female' ? 'male' : 'female' })
                                         } 
-                                        required
                                     />
                                     <label htmlFor="female" className="text-xs">Female</label>
                                 </div>

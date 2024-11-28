@@ -5,7 +5,7 @@ import { NextResponse } from "next/server";
 export const GET = async () => {
     try {
         await connect();
-        const posts = await Post.find({ deletedAt: null });
+        const posts = await Post.find({ deletedAt: null }).sort({ createdAt: -1 });
         return new NextResponse(JSON.stringify({message: 'OK', posts: posts}), {status: 200});
     } catch (error: unknown) {
         let message = '';

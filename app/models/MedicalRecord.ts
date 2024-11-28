@@ -3,11 +3,12 @@ import { Schema, model, models } from "mongoose";
 import Consultation from "./Consultation";
 
 interface IMedicalRecord extends Document {
+    patient: Schema.Types.ObjectId;
     consultation: Schema.Types.ObjectId;
     medical_examination: Schema.Types.ObjectId;
     dental_consultation: Schema.Types.ObjectId;
     consultation_type: string;
-    findings: string[];
+    findings?: string[];
     deletedAt?: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -15,6 +16,11 @@ interface IMedicalRecord extends Document {
 
 const medicalRecordSchema = new Schema<IMedicalRecord>(
     {
+        patient: {
+            type: Schema.Types.ObjectId,
+            ref: 'Patient',
+            required: true,
+        },
         consultation: {
             type: Schema.Types.ObjectId,
             ref: 'Consultation',
@@ -34,10 +40,7 @@ const medicalRecordSchema = new Schema<IMedicalRecord>(
             type: String,
             required: true,
         },
-        findings: {
-            type: [String],
-            required: true,
-        },
+        findings: [String],
         deletedAt: Date,
     },
     {

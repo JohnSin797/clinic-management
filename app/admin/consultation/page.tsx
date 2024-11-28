@@ -14,6 +14,7 @@ interface Patient {
     extension?: string;
     position: 'student' | 'teacher' | 'non-teaching-staff';
     course?: string | null;
+    year?: number | null;
     department: string;
     id_number: string;
     birthdate: Date;
@@ -78,8 +79,55 @@ interface ConsultationState {
     createdAt: Date | null;
 }
 
+interface MedicalExaminationState {
+    patient: Patient;
+    civil_status: string;
+    purpose: string;
+    past_medical_history: string;
+    family_history: string;
+    occupational_history: string;
+    body_mass_index: string;
+    skin: string;
+    heads: string;
+    eyes: string;
+    ears: string;
+    mouth: string;
+    neck: string;
+    chest: string;
+    abdomen: string;
+    rectal: string;
+    musculo_skeletal: string;
+    extremeties: string;
+    other: string;
+    blood_pressure: string;
+    temperature: string;
+    hr: string;
+    rr: string;
+    height: string;
+    weight: string;
+    hearing: string;
+    vision: string;
+    vision_l: string;
+    vision_r: string;
+    chest_xray: string;
+    xray_type: string;
+    complete_blood_count: string;
+    routine_urinalysis: string;
+    fecalysis: string;
+    hepatitis_b_screening: string;
+    metaphetamine: string;
+    tetrahydrocannabinol: string;
+    image: string;
+    classification: string;
+    needs_treatment: string[];
+    remarks: string;
+    createdAt: Date;
+}
+
 interface MedexState {
+    patient: Patient;
     consultation: ConsultationState;
+    medical_examination: MedicalExaminationState;
     consultation_type: string;
     findings: string;
     createdAt: Date;
@@ -87,18 +135,12 @@ interface MedexState {
 
 export default function Consultation() {
     const [isHidden, setIsHidden] = useState<boolean>(true)
-    // const [goTo, setGoTo] = useState<string>('')
     const [consultations, setConsultations] = useState<MedexState[]>([])
-    const { exportConsultation } = Exports()
+    const { exportConsultation, exportMedicalExamination } = Exports()
 
     const togglePatientFinder = () => {
         setIsHidden(!isHidden)
     }
-
-    // const setFinderPath = (link: string) => {
-    //     setGoTo(link)
-    //     togglePatientFinder()
-    // }
 
     const getConsultations = useCallback(async () => {
         await axios.get('/api/medical-record')
@@ -116,47 +158,13 @@ export default function Consultation() {
         getConsultations()
     }, [getConsultations])
 
-    // const consultationExport = async (id: string) => {
-    //     // exportConsultation()
-    //     toast.promise(
-    //         axios.post('/api/consultation/export', { id: id }),
-    //         {
-    //             pending: 'Exporting file...',
-    //             success: {
-    //                 render({ data }) {
-    //                     const url = window.URL.createObjectURL(new Blob([data.data]))
-    //                     saveAs(url, 'test.docx');
-    //                     window.URL.revokeObjectURL(url);
-    //                     // const link = document.createElement('a')
-    //                     // link.href = url
-    //                     // link.setAttribute('download', 'Generated_Document.docx')
-    //                     // document.body.appendChild(link)
-    //                     // link.click()
-    //                     // link.remove()
-    //                     // window.URL.revokeObjectURL(url)
-    //                     return 'Download ready'
-    //                 }
-    //             },
-    //             error: {
-    //                 render({ data }: { data: AxiosResponse }) {
-    //                     console.log(data)
-    //                     return data?.data?.message
-    //                 }
-    //             }
-    //         }
-    //     )
-    // }
-
     return (
         <div className="w-full flex justify-center items-center">
             <PatientFinder isHidden={isHidden} goTo={'consultation'} toggle={togglePatientFinder} />
-            <section className="w-full md:w-2/3 rounded-lg shadow-xl p-5 bg-zinc-400">
+            <section className="w-full md:w-2/3 rounded-lg shadow-xl p-5 bg-zinc-400 overflow-auto">
                 <header className="mb-5 font-semibold flex justify-between items-center">
                     <h1 className="text-2xl">Consultations</h1>
                     <div className="flex flex-wrap gap-2">
-                        {/* <button onClick={()=>setFinderPath('/admin/consultation/consultation')} className="p-2 rounded text-white font-semibold bg-emerald-600 hover:bg-emerald-700">Consultation</button>
-                        <button onClick={()=>setFinderPath('/admin/consultation/medical-examination')} className="p-2 rounded text-white font-semibold bg-lime-600 hover:bg-lime-700">Medical Examination</button>
-                        <button onClick={()=>setFinderPath('/admin/consultation/dental-consultation')} className="p-2 rounded text-white font-semibold bg-teal-600 hover:bg-teal-700">Dental Consultation</button> */}
                         <Link href={'/admin/consultation/archive'} className="p-2 rounded text-white text-center font-semibold bg-cyan-400 hover:bg-cyan-600">Archive</Link>
                     </div>
                 </header>
@@ -177,15 +185,23 @@ export default function Consultation() {
                                     return (
                                         <tr key={index}>
                                             <td>
-                                                {item?.consultation?.patient?.first_name} {item?.consultation?.patient?.middle_name} {item?.consultation?.patient?.last_name} {item?.consultation?.patient?.extension}
+                                                {item?.patient?.first_name} {item?.patient?.middle_name} {item?.patient?.last_name} {item?.patient?.extension}
 
                                             </td>
-                                            <td>{item?.consultation?.patient?.position}</td>
+                                            <td>{item?.patient?.position}</td>
                                             <td>{item?.consultation_type}</td>
                                             <td>{new Date(item?.createdAt).toLocaleDateString('en-PH')}</td>
                                             <td>
                                                 <div className="w-full flex flex-wrap justify-center items-center gap-2">
-                                                    <button onClick={()=>exportConsultation(item?.consultation)} className="p-2 text-sm text-white font-bold bg-blue-400 hover:bg-blue-600 rounded">export</button>
+                                                    {
+                                                        item.consultation_type=='consultation' && 
+                                                        <button onClick={()=>exportConsultation(item?.consultation, item?.patient)} className="p-2 text-sm text-white font-bold bg-blue-400 hover:bg-blue-600 rounded">export</button>
+                                                    }
+                                                    
+                                                    {
+                                                        item.consultation_type=='medical-examination' && 
+                                                        <button onClick={()=>exportMedicalExamination(item?.medical_examination, item?.patient)} className="p-2 text-sm text-white font-bold bg-blue-400 hover:bg-blue-600 rounded">export</button>
+                                                    }
                                                     {/* <button onClick={()=>consultationExport(item?.consultation?._id)} className="p-2 text-sm text-white font-bold bg-blue-400 hover:bg-blue-600 rounded">export</button> */}
                                                     <button className="p-2 text-sm text-white font-bold bg-rose-400 hover:bg-rose-600 rounded">archive</button>
                                                 </div>

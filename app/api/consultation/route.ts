@@ -50,12 +50,13 @@ export const POST = async (request: Request) => {
             complaint: consultation.current_illness,
             findings: consultation.current_illness
         });
-        await MedicalRecord.create({
+        const record = await MedicalRecord.create({
+            patient: body?.patient,
             consultation: consultation._id,
             consultation_type: 'consultation',
             findings: consultation?.current_illness,
         });
-        return new NextResponse(JSON.stringify({message: 'OK'}), {status: 200});
+        return new NextResponse(JSON.stringify({message: 'OK', record: record}), {status: 200});
     } catch (error: unknown) {
         let message = '';
         if (error instanceof Error) {
